@@ -1,14 +1,14 @@
 
    <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
      <channel>
-       <title>Posts on Superjomn&#39;s Blog</title>
-       <link>http://superjomn.github.io/posts/</link>
-       <description>Recent content in Posts on Superjomn&#39;s Blog</description>
+       <title>hugo on Superjomn&#39;s Blog</title>
+       <link>http://superjomn.github.io/tags/hugo/</link>
+       <description>Recent content in hugo on Superjomn&#39;s Blog</description>
        <generator>Hugo -- gohugo.io</generator>
        <language>en-us</language>
        <lastBuildDate>Thu, 26 Dec 2019 00:00:00 +0800</lastBuildDate>
        
-           <atom:link href="http://superjomn.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+           <atom:link href="http://superjomn.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
        
        
        <item>

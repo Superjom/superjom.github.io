@@ -1,0 +1,168 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Superjomn&#39;s Blog</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="[Superjomn]" /><meta name="generator" content="Hugo 0.62.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+  <script src="https://kit.fontawesome.com/b76b73e8e8.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Superjomn's Blog</a>
+            </h1>
+
+      <ul id="social-media">
+        
+        
+          
+        <li><a href="https://github.com/Superjomn"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a></li>
+           
+      </ul>
+      
+      <p><em>Superjomn's blog</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>通过 Org Mode 和 hugo 搭建 Blog</h1>
+
+    
+        <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2019-12-26T00:00:00&#43;08:00">Dec 26, 2019</time>
+        </li>
+        
+
+        
+        <li>
+            <em>
+                
+                    
+                    <a href="/tags/howto">#howto</a>
+                
+                    , 
+                    <a href="/tags/hugo">#hugo</a>
+                
+                    , 
+                    <a href="/tags/emacs">#emacs</a>
+                
+            </em>
+        </li>
+        
+
+        <li>One minute read</li>
+    </ul>
+</aside>
+
+    
+
+    <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<ul>
+<li><a href="#%E5%AE%89%E8%A3%85-hugo">安装 Hugo</a></li>
+<li><a href="#emacs-%E4%B8%AD%E5%AE%89%E8%A3%85-ox-hugo">emacs 中安装 ox-hugo</a></li>
+<li><a href="#%E6%96%B0%E5%BB%BA-hugo-%E7%AB%99%E7%82%B9">新建 hugo 站点</a></li>
+<li><a href="#%E6%95%B4%E4%BD%93%E6%89%93%E9%80%9A">整体打通</a></li>
+</ul>
+<!-- raw HTML omitted -->
+<p>本人用了 org-mode 已经很长一段时间了，主要的信息整理都完全通过 org mode 完成。
+自己做一些笔记但毕竟琐碎，所以计划当知识逐渐成体系后，通过博文的方式做总结。</p>
+<p>org-mode + ox-huge 是目前我能找到的最方便的工具，当然我本人最关注的是</p>
+<ul>
+<li>简单可靠</li>
+<li>博客主题样式（默认）素朴，无需纠结</li>
+<li>能复用 org-mode</li>
+</ul>
+<h2 id="安装-hugo">安装 Hugo</h2>
+<p>Hugo 是 golang 编写的博客系统，主要特性：</p>
+<ul>
+<li>快速</li>
+<li>简单，单机易配置</li>
+<li>更新迅速</li>
+</ul>
+<p>地址： <a href="https://gohugo.io/">https://gohugo.io/</a></p>
+<p>安装文档： <a href="https://gohugo.io/getting-started/installing/">https://gohugo.io/getting-started/installing/</a></p>
+<p>我这里是 Mac 安装，参考文档直接执行</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">brew install hugo
+</code></pre></div><p>验证安装正确，可以执行</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-emacs-lisp" data-lang="emacs-lisp">hugo help
+</code></pre></div><p>验证得到正确的帮助列表。</p>
+<h2 id="emacs-中安装-ox-hugo">emacs 中安装 ox-hugo</h2>
+<p>文档： <a href="https://ox-hugo.scripter.co/">https://ox-hugo.scripter.co/</a>
+安装文档：<a href="https://ox-hugo.scripter.co/#usage">https://ox-hugo.scripter.co/#usage</a></p>
+<p>我本人用的 spacemacs，因此直接往 <code>.spacemacs</code> 文件中 <code>user-config</code> 位置增加</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-emacs-lisp" data-lang="emacs-lisp">(defun dotspacemacs/user-config ()
+  <span style="color:#75715e">;; Other stuff</span>
+  <span style="color:#75715e">;; ..</span>
+
+  <span style="color:#75715e">;; ox-hugo config</span>
+  (use-package ox-hugo
+    :ensure <span style="color:#66d9ef">t</span>          <span style="color:#75715e">;Auto-install the package from Melpa (optional)</span>
+    :after ox))
+</code></pre></div><p>重新启动 emacs 便可。</p>
+<h2 id="新建-hugo-站点">新建 hugo 站点</h2>
+<p>这部分操作可以直接参考 Hugo 的 <a href="https://gohugo.io/getting-started/quick-start">Quick Start</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">hugo new site myorgs
+</code></pre></div><h2 id="整体打通">整体打通</h2>
+<p>org-mode 连接到 hugo，是通过 ox-hugo 将 org 文件转换为 markdown 格式，并自动复制到 hugo 站点相应的路径，这里需要有两个路径配置：</p>
+<ol>
+<li><code>HUGO_SECTION</code></li>
+<li><code>HUGO_BASE_DIR</code></li>
+</ol>
+<p>我这里直接在 org 文件的开头做配置</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-org" data-lang="org"><span style="color:#75715e">#+hugo_base_dir</span><span style="color:#75715e">: ~/project/myblog</span>
+<span style="color:#75715e">#+hugo_section</span><span style="color:#75715e">: ./posts</span>
+</code></pre></div><p>之后在 emacs 中执行 <code>org-hugo-export-to-md</code> 命令就能够完成 hugo 中 markdown 文章的生成工作，之后到 hugo 站点路径下，执行 hugo 相应命令便可。</p>
+<p>当然也可以通过 <code>org-hugo-auto-export-mode</code> ，当 org 文件编辑时，同步输出到 hugo 中。</p>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        
+    </ul>
+</section>
+    
+
+
+
+
+
+</main>
+    <footer>
+        <h6> |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="http://superjomn.github.io/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>
