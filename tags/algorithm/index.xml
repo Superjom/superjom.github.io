@@ -1,0 +1,75 @@
+
+   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+     <channel>
+       <title>algorithm on Superjomn&#39;s Blog</title>
+       <link>http://superjomn.github.io/tags/algorithm/</link>
+       <description>Recent content in algorithm on Superjomn&#39;s Blog</description>
+       <generator>Hugo -- gohugo.io</generator>
+       <language>en-us</language>
+       <lastBuildDate>Thu, 26 Dec 2019 00:00:00 +0800</lastBuildDate>
+       
+           <atom:link href="http://superjomn.github.io/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
+       
+       
+       <item>
+         <title>Linked List Related Algorithms (WIP)</title>
+         <link>http://superjomn.github.io/posts/leetcode-list/</link>
+         <pubDate>Thu, 26 Dec 2019 00:00:00 +0800</pubDate>
+         
+         <guid>http://superjomn.github.io/posts/leetcode-list/</guid>
+         <description>&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#%E9%93%BE%E8%A1%A8%E5%B8%B8%E8%A7%84%E6%93%8D%E4%BD%9C-%E6%A8%A1%E6%9D%BF&#34;&gt;链表常规操作（模板）&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#%E8%8E%B7%E5%8F%96%E9%95%BF%E5%BA%A6&#34;&gt;获取长度&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E6%8B%86%E5%88%86%E4%B8%A4%E5%8D%8A&#34;&gt;拆分两半&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF&#34;&gt;判断是否有环&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8&#34;&gt;实际应用&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%AF%B9%E9%93%BE%E8%A1%A8%E6%8E%92%E5%BA%8F&#34;&gt;对链表排序&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E7%BB%8F%E5%85%B8%E9%A2%98&#34;&gt;经典题&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;由于是半路出家学的计算机，所以基础算法这部分一直没有搞的特别的清楚，长久在工作和日常思维方面的确对比 ACM 的同学有一定劣势。&lt;/p&gt;
+&lt;p&gt;但因为想长久从事这个行业，加上初步投入一定时间练习基础题后，自己觉得思维方面有一定的补充效果，所以决定长期做一些积累。&lt;/p&gt;
+&lt;p&gt;我会按多个文章来记录，每个文章聚焦一些主题，这样有利于整理一些思考。&lt;/p&gt;
+&lt;p&gt;所有的题目均来自 Leetcode，这样便于所见即所得；相应的编程语言，由于与算法无关，因此我会按方便所需混用 Python 和 C++。&lt;/p&gt;
+&lt;h2 id=&#34;链表常规操作-模板&#34;&gt;链表常规操作（模板）&lt;/h2&gt;
+&lt;h3 id=&#34;获取长度&#34;&gt;获取长度&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_length&lt;/span&gt;(node):
+    len &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; node:
+        len &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+        node &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;next
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; len
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;拆分两半&#34;&gt;拆分两半&lt;/h3&gt;
+&lt;p&gt;采用 slow, fast 双指针，slow 指针每次走 1 步，fast 指针每次走 2 步&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;split_two_half&lt;/span&gt;(node):
+    pre &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fast &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; fast &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; fast&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;next:
+        &lt;span style=&#34;color:#75715e&#34;&gt;# fast pointer go 2x steps&lt;/span&gt;
+        fast &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fast&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;next&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;next
+        pre &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mid
+        &lt;span style=&#34;color:#75715e&#34;&gt;# mid pointer go x steps&lt;/span&gt;
+        mid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mid&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;next
+
+    l0 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; node
+    pre&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;next &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; None
+    l2 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mid
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; l0, l2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;判断是否有环&#34;&gt;判断是否有环&lt;/h3&gt;
+&lt;h2 id=&#34;实际应用&#34;&gt;实际应用&lt;/h2&gt;
+&lt;h3 id=&#34;对链表排序&#34;&gt;对链表排序&lt;/h3&gt;
+&lt;h2 id=&#34;经典题&#34;&gt;经典题&lt;/h2&gt;
+</description>
+       </item>
+       
+     </channel>
+   </rss>
