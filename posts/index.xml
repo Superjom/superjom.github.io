@@ -1,0 +1,82 @@
+
+   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+     <channel>
+       <title>Posts on Superjomn&#39;s Blog</title>
+       <link>http://superjomn.github.io/posts/</link>
+       <description>Recent content in Posts on Superjomn&#39;s Blog</description>
+       <generator>Hugo -- gohugo.io</generator>
+       <language>en-us</language>
+       <lastBuildDate>Fri, 26 Jul 2019 00:00:00 +0800</lastBuildDate>
+       
+           <atom:link href="http://superjomn.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+       
+       
+       <item>
+         <title>通过 Org Mode 和 hugo 搭建 Blog</title>
+         <link>http://superjomn.github.io/posts/1/</link>
+         <pubDate>Fri, 26 Jul 2019 00:00:00 +0800</pubDate>
+         
+         <guid>http://superjomn.github.io/posts/1/</guid>
+         <description>&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%AE%89%E8%A3%85-hugo&#34;&gt;安装 Hugo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#emacs-%E4%B8%AD%E5%AE%89%E8%A3%85-ox-hugo&#34;&gt;emacs 中安装 ox-hugo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E6%96%B0%E5%BB%BA-hugo-%E7%AB%99%E7%82%B9&#34;&gt;新建 hugo 站点&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E6%95%B4%E4%BD%93%E6%89%93%E9%80%9A&#34;&gt;整体打通&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;本人用了 org-mode 已经很长一段时间了，主要的信息整理都完全通过 org mode 完成。
+自己做一些笔记但毕竟琐碎，所以计划当知识逐渐成体系后，通过博文的方式做总结。&lt;/p&gt;
+&lt;p&gt;org-mode + ox-huge 是目前我能找到的最方便的工具，当然我本人最关注的是&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;简单可靠&lt;/li&gt;
+&lt;li&gt;博客主题样式（默认）素朴，无需纠结&lt;/li&gt;
+&lt;li&gt;能复用 org-mode&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;安装-hugo&#34;&gt;安装 Hugo&lt;/h2&gt;
+&lt;p&gt;Hugo 是 golang 编写的博客系统，主要特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;快速&lt;/li&gt;
+&lt;li&gt;简单，单机易配置&lt;/li&gt;
+&lt;li&gt;更新迅速&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;地址： &lt;a href=&#34;https://gohugo.io/&#34;&gt;https://gohugo.io/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;安装文档： &lt;a href=&#34;https://gohugo.io/getting-started/installing/&#34;&gt;https://gohugo.io/getting-started/installing/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;我这里是 Mac 安装，参考文档直接执行&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;brew install hugo
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;验证安装正确，可以执行&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-emacs-lisp&#34; data-lang=&#34;emacs-lisp&#34;&gt;hugo help
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;验证得到正确的帮助列表。&lt;/p&gt;
+&lt;h2 id=&#34;emacs-中安装-ox-hugo&#34;&gt;emacs 中安装 ox-hugo&lt;/h2&gt;
+&lt;p&gt;文档： &lt;a href=&#34;https://ox-hugo.scripter.co/&#34;&gt;https://ox-hugo.scripter.co/&lt;/a&gt;
+安装文档：&lt;a href=&#34;https://ox-hugo.scripter.co/#usage&#34;&gt;https://ox-hugo.scripter.co/#usage&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;我本人用的 spacemacs，因此直接往 &lt;code&gt;.spacemacs&lt;/code&gt; 文件中 &lt;code&gt;user-config&lt;/code&gt; 位置增加&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-emacs-lisp&#34; data-lang=&#34;emacs-lisp&#34;&gt;(defun dotspacemacs/user-config ()
+  &lt;span style=&#34;color:#75715e&#34;&gt;;; Other stuff&lt;/span&gt;
+  &lt;span style=&#34;color:#75715e&#34;&gt;;; ..&lt;/span&gt;
+
+  &lt;span style=&#34;color:#75715e&#34;&gt;;; ox-hugo config&lt;/span&gt;
+  (use-package ox-hugo
+    :ensure &lt;span style=&#34;color:#66d9ef&#34;&gt;t&lt;/span&gt;          &lt;span style=&#34;color:#75715e&#34;&gt;;Auto-install the package from Melpa (optional)&lt;/span&gt;
+    :after ox))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;重新启动 emacs 便可。&lt;/p&gt;
+&lt;h2 id=&#34;新建-hugo-站点&#34;&gt;新建 hugo 站点&lt;/h2&gt;
+&lt;p&gt;这部分操作可以直接参考 Hugo 的 &lt;a href=&#34;https://gohugo.io/getting-started/quick-start&#34;&gt;Quick Start&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;hugo new site myorgs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;整体打通&#34;&gt;整体打通&lt;/h2&gt;
+&lt;p&gt;org-mode 连接到 hugo，是通过 ox-hugo 将 org 文件转换为 markdown 格式，并自动复制到 hugo 站点相应的路径，这里需要有两个路径配置：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;HUGO_SECTION&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;HUGO_BASE_DIR&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;我这里直接在 org 文件的开头做配置&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-org&#34; data-lang=&#34;org&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#+hugo_base_dir&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;: ~/project/myblog&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#+hugo_section&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;: ./posts&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;之后在 emacs 中执行 &lt;code&gt;org-hugo-export-to-md&lt;/code&gt; 命令就能够完成 hugo 中 markdown 文章的生成工作，之后到 hugo 站点路径下，执行 hugo 相应命令便可。&lt;/p&gt;
+&lt;p&gt;当然也可以通过 &lt;code&gt;org-hugo-auto-export-mode&lt;/code&gt; ，当 org 文件编辑时，同步输出到 hugo 中。&lt;/p&gt;
+</description>
+       </item>
+       
+     </channel>
+   </rss>
