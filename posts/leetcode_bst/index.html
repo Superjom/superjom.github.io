@@ -1,0 +1,98 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Superjomn&#39;s Blog</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="Superjomn" /><meta name="generator" content="Hugo 0.62.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+  <script src="https://kit.fontawesome.com/b76b73e8e8.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Superjomn's Blog</a>
+            </h1>
+
+      <ul id="social-media">
+        
+        
+          
+        <li><a href="https://github.com/Superjomn"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a></li>
+           
+      </ul>
+      
+      <p><em>Superjomn's blog</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+    <main>
+
+
+
+<main>
+    <article>
+    <header>
+        <h1>BST related</h1>
+    </header>
+        <p>[toc]</p>
+<h1 id="heading">常用技巧</h1>
+<h1 id="heading-1">经典题型</h1>
+<h2 id="bst-generation">BST Generation</h2>
+<p><a href="https://leetcode.com/problems/unique-binary-search-trees-ii/">https://leetcode.com/problems/unique-binary-search-trees-ii/</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate</span>(n):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">helper</span>(l, r):
+        trees <span style="color:#f92672">=</span> []
+        <span style="color:#66d9ef">if</span> l <span style="color:#f92672">==</span> r:
+            trees<span style="color:#f92672">.</span>append(TreeNode(l))
+        <span style="color:#66d9ef">elif</span> l <span style="color:#f92672">&lt;</span> r:
+            <span style="color:#66d9ef">for</span> m <span style="color:#f92672">in</span> range(l, r<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>): <span style="color:#75715e"># note, there is n+1</span>
+                ls <span style="color:#f92672">=</span> helper(l, m<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+                rs <span style="color:#f92672">=</span> helper(m<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, r)
+                ls <span style="color:#f92672">=</span> ls <span style="color:#66d9ef">if</span> ls <span style="color:#66d9ef">else</span> [None]
+                rs <span style="color:#f92672">=</span> rs <span style="color:#66d9ef">if</span> rs <span style="color:#66d9ef">else</span> [None]
+                <span style="color:#66d9ef">for</span> lt <span style="color:#f92672">in</span> ls:
+                    <span style="color:#66d9ef">for</span> rt <span style="color:#f92672">in</span> rs:
+                        mid <span style="color:#f92672">=</span> TreeNode(m)
+                        mid<span style="color:#f92672">.</span>left <span style="color:#f92672">=</span> lt
+                        mid<span style="color:#f92672">.</span>right <span style="color:#f92672">=</span> rt
+                        trees<span style="color:#f92672">.</span>append(mid)
+         <span style="color:#66d9ef">return</span> trees
+    <span style="color:#66d9ef">return</span> helper(<span style="color:#ae81ff">1</span>, n)
+</code></pre></div>
+    </article>
+    <aside>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#bst-generation">BST Generation</a></li>
+  </ul>
+</nav>
+    </aside>
+</main>
+
+
+</main>
+    <footer>
+        <h6> |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="http://superjomn.github.io/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>

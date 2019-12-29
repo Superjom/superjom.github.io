@@ -6,18 +6,21 @@
        <description>Recent content on Superjomn&#39;s Blog</description>
        <generator>Hugo -- gohugo.io</generator>
        <language>en-us</language>
-       <lastBuildDate>Thu, 26 Dec 2019 00:00:00 +0800</lastBuildDate>
+       <lastBuildDate>Sun, 29 Dec 2019 00:00:00 +0000</lastBuildDate>
        
            <atom:link href="http://superjomn.github.io/index.xml" rel="self" type="application/rss+xml" />
        
        
        <item>
-         <title>Posts</title>
+         <title></title>
          <link>http://superjomn.github.io/posts/</link>
-         <pubDate>Thu, 26 Dec 2019 00:00:00 +0800</pubDate>
+         <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
          
          <guid>http://superjomn.github.io/posts/</guid>
-         <description></description>
+         <description>&lt;p&gt;title = &amp;ldquo;Posts&amp;rdquo;
+menu = &amp;ldquo;main&amp;rdquo;
+weight = &amp;ldquo;10&amp;rdquo;&lt;/p&gt;
+</description>
        </item>
        
      </channel>

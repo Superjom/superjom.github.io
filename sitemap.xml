@@ -4,7 +4,43 @@
   
   <url>
     <loc>http://superjomn.github.io/posts/</loc>
-    <lastmod>2019-12-26T00:00:00+08:00</lastmod>
+    <lastmod>2019-12-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/design_pattern_builder/</loc>
+    <lastmod>2019-12-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/</loc>
+    <lastmod>2019-12-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/design_pattern_visitor/</loc>
+    <lastmod>2019-12-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/leetcode_bst/</loc>
+    <lastmod>2019-12-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/design_pattern_observer/</loc>
+    <lastmod>2019-12-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/leetcode_list/</loc>
+    <lastmod>2019-12-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/challenges-in-deep-learning-platform/</loc>
+    <lastmod>2019-12-28T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -38,11 +74,6 @@
   </url>
   
   <url>
-    <loc>http://superjomn.github.io/</loc>
-    <lastmod>2019-12-26T00:00:00+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://superjomn.github.io/tags/</loc>
     <lastmod>2019-12-26T00:00:00+08:00</lastmod>
   </url>
@@ -50,6 +81,21 @@
   <url>
     <loc>http://superjomn.github.io/posts/hugo/</loc>
     <lastmod>2019-12-26T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/leetcode_array/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/leetcode_dp/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/leetcode_tree/</loc>
+    <priority>0</priority>
   </url>
   
   <url>

@@ -1,0 +1,247 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Superjomn&#39;s Blog</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="Superjomn" /><meta name="generator" content="Hugo 0.62.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+  <script src="https://kit.fontawesome.com/b76b73e8e8.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Superjomn's Blog</a>
+            </h1>
+
+      <ul id="social-media">
+        
+        
+          
+        <li><a href="https://github.com/Superjomn"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a></li>
+           
+      </ul>
+      
+      <p><em>Superjomn's blog</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+    <main>
+
+
+
+<main>
+    <article>
+    <header>
+        <h1>Visitor Design Pattern</h1>
+    </header>
+        <p>Visitor Pattern 用于表示对某种对象的操作，当增加新的操作时，无需修改被操作对象的代码。</p>
+<h1 id="heading">使用前</h1>
+<p>比如，我们定义一类宠物，有两个实现猫(Cat) 和狗(Dog)；宠物都有抚摸(Stroke) 和喂食(Feed) 的操作</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Pet</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> Stroke() <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Feed</span>() <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+};
+</code></pre></div><p>对应实现 Cat 和 Dog 的两个操作</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cat</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> Pet {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> Stroke() <span style="color:#66d9ef">override</span> { <span style="color:#75715e">/* cat stroke way */</span> }
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Feed</span>() <span style="color:#66d9ef">override</span> { <span style="color:#75715e">/* cat feed way */</span> }
+};
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Dog</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> Pet {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> Stroke() <span style="color:#66d9ef">override</span> { <span style="color:#75715e">/* dog stroke way */</span> }
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Feed</span>() <span style="color:#66d9ef">override</span> { <span style="color:#75715e">/* dog feed way */</span> }
+};
+</code></pre></div><p>类似 <code>Pet</code> 这样的接口实现，会有如下问题：</p>
+<ul>
+<li>类似 Stroke 和 Feed 这类 Pet 操作，会有很多，比如 Train, Hug 等等</li>
+<li>每增加一种操作，都需要修改所有 Pet 的实现，工作量可能很大</li>
+</ul>
+<p>Visitor Pattern 就是用于优化此类场景的建模，在增加更多操作后，不需要修改被操作方的代码。</p>
+<h1 id="heading-1">模板</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#75715e">// interfaces
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Visitor</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> Visit(<span style="color:#66d9ef">const</span> AccepterA<span style="color:#f92672">&amp;</span> x) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Visit</span>(<span style="color:#66d9ef">const</span> AccepterB<span style="color:#f92672">&amp;</span> x) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+};
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Accepter</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> Accept(Visitor<span style="color:#f92672">*</span> visitor) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+};
+
+<span style="color:#75715e">// implementations
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AccepterA</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> Accept(Visitor<span style="color:#f92672">&amp;</span> x) { x.Visit(<span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>); }
+};
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AccepterB</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> Accept(Visitor<span style="color:#f92672">&amp;</span> x) { x.Visit(<span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>); }
+};
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeVisitor</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> Visit(<span style="color:#66d9ef">const</span> AccepterA<span style="color:#f92672">&amp;</span> x) { ... }  <span style="color:#75715e">// operate on AccepterA 
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Visit</span>(<span style="color:#66d9ef">const</span> AccepterB<span style="color:#f92672">&amp;</span> x) { ... }  <span style="color:#75715e">// operate on AccepterB
+</span><span style="color:#75715e"></span>};
+
+
+<span style="color:#75715e">// use it
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    vector<span style="color:#f92672">&lt;</span>Accepter<span style="color:#f92672">&gt;</span> accepters;
+    SomeVisitor visitor;
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> x : accepters) {
+        x.Accept(<span style="color:#f92672">&amp;</span>visitor);
+    }
+}
+</code></pre></div><h1 id="heading-2">使用后</h1>
+<p>对应着，之前的示例可以修改为</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#75715e">// Visitor interface
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PetVisitor</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> Visit(Dog<span style="color:#f92672">&amp;</span> dog);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Visit</span>(Cat<span style="color:#f92672">&amp;</span> cat);
+};
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StrokeOpr</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> PetVisitor {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> Visit(Dog<span style="color:#f92672">&amp;</span> dog) {
+        cout <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">stroke a dog</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> endl;
+    }
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Visit</span>(Cat<span style="color:#f92672">&amp;</span> cat) {
+        cout <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">stroke a cat</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> endl;
+    }
+};
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FeedOpr</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> PetVisitor {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> Visit(Dog<span style="color:#f92672">&amp;</span> dog) {
+        cout <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">feed a dog</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> endl;
+    }
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Visit</span>(Cat<span style="color:#f92672">&amp;</span> cat) {
+        cout <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">feed a cat</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> endl;
+    }
+};
+
+<span style="color:#75715e">// Pet interface
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Pet</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> Accept(PetVisitor<span style="color:#f92672">*</span> visitor) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+};
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cat</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> Accept(PetVisitor<span style="color:#f92672">*</span> visitor) <span style="color:#66d9ef">override</span> { visitor<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>Visit(<span style="color:#66d9ef">this</span>); }
+};
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Dog</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    <span style="color:#66d9ef">void</span> Accept(PetVisitor<span style="color:#f92672">*</span> visitor) <span style="color:#66d9ef">override</span> { visitor<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>Visit(<span style="color:#66d9ef">this</span>); }
+};
+</code></pre></div><h1 id="heading-3">实际案例</h1>
+<p>之前在一些 NN Compiler 里看到 IR 用了这个设计模式，比较早的是 Halide 的代码，比如 <a href="https://github.com/halide/Halide/blob/release_2019_08_27/src/IRVisitor.h">IRVisitor.h</a> ，这里摘抄部分</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#75715e">/** A base class for algorithms that need to recursively walk over the
+</span><span style="color:#75715e"> * IR. The default implementations just recursively walk over the
+</span><span style="color:#75715e"> * children. Override the ones you care about.
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IRVisitor</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    IRVisitor();
+    <span style="color:#66d9ef">virtual</span> <span style="color:#f92672">~</span>IRVisitor();
+<span style="color:#66d9ef">protected</span><span style="color:#f92672">:</span>
+    <span style="color:#75715e">// ExprNode&lt;&gt; and StmtNode&lt;&gt; are allowed to call visit (to implement accept())
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">friend</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">ExprNode</span>;
+
+
+    <span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">friend</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">StmtNode</span>;
+
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> IntImm <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> UIntImm <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> FloatImm <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> StringImm <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Cast <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Variable <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Add <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Sub <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Mul <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Div <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Mod <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Min <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Max <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> EQ <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> NE <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> LT <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> LE <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> GT <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> GE <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> And <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Or <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Not <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Select <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Load <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Ramp <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Broadcast <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Call <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Let <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> LetStmt <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> AssertStmt <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> ProducerConsumer <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> For <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Store <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Provide <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Allocate <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Free <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Realize <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Block <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> IfThenElse <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Evaluate <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Shuffle <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Prefetch <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Fork <span style="color:#f92672">*</span>);
+    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> Acquire <span style="color:#f92672">*</span>);
+};
+</code></pre></div><p>最开头说过，Visitor Pattern 的好处是，增加新操作时，无需对操作对象做修改，这里 IR 的操作对象有 34 个，能感受到规模和效果了吧。</p>
+<h1 id="reference">Reference</h1>
+<ul>
+<li><a href="https://cpppatterns.com/patterns/visitor.html">C++ Pattern</a></li>
+<li><a href="https://www.geeksforgeeks.org/visitor-design-pattern/">Visitor Design Pattern - GeeksforGeeks</a></li>
+</ul>
+
+    </article>
+    <aside>
+        <nav id="TableOfContents"></nav>
+    </aside>
+</main>
+
+
+</main>
+    <footer>
+        <h6> |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="http://superjomn.github.io/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>

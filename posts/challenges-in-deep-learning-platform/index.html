@@ -1,0 +1,124 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Superjomn&#39;s Blog</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="Superjomn" /><meta name="generator" content="Hugo 0.62.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+  <script src="https://kit.fontawesome.com/b76b73e8e8.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Superjomn's Blog</a>
+            </h1>
+
+      <ul id="social-media">
+        
+        
+          
+        <li><a href="https://github.com/Superjomn"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a></li>
+           
+      </ul>
+      
+      <p><em>Superjomn's blog</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+    <main>
+
+
+
+<main>
+    <article>
+    <header>
+        <h1>深度学习平台开发中的十个“坑”</h1>
+    </header>
+        <p>从事 PaddlePaddle 深度学习平台已经过二.五载，完整经历了 Paddle Fluid 架构从无到有到如今相对稳定，相关的所看所干所思已经有一定积累了，这段时间整理下来。</p>
+<p>PaddlePaddle 是类似 TensorFlow 的深度学习平台，包括训练（分布式）、预测、Hub、Serving 等完整自主工作链，这块在国内还是非常难得的。</p>
+<p>类似这样规模的系统是一个硬骨头，能到与各超大体量的公司（谷歌、Facebook、Amazon）在局部战役上达到一定的分庭抗礼的局面，这个对于 Team 已经是以小博大比较显著的成果了，但革命尚未成功，同志们仍需努力。</p>
+<p>我整理了个人理解中，开发过程中的十个“坑”，所谓坑，这里定义为“困难”；有坑就应该有填坑的方法，但惭愧的是，其中有几个尚没有个人能够接受的解决方法，只能给出一部分思考，以期抛砖引玉。</p>
+<p>在阐述中，我会避免涉及 PaddlePaddle 中具体实施的方案，而以普世的例子给出，以避免一些困扰。</p>
+<h1 id="heading">深度学习平台简介</h1>
+<h2 id="heading-1">训练框架</h2>
+<h2 id="heading-2">预测</h2>
+<h2 id="heading-3">分布式训练</h2>
+<h1 id="-">坑一： 兼容性之殇</h1>
+<p>当最早的DNN平台迭代几个版本后，兼容性问题就开始凸显了。</p>
+<h2 id="operator-">Operator 的兼容性</h2>
+<h2 id="heading-4">模型粒度的兼容性</h2>
+<h2 id="api">API升级，旧模型旧用法怎么办</h2>
+<h1 id="mvp-vs-">坑二：MVP vs 生产环境</h1>
+<h2 id="mvp">MVP的快速构建</h2>
+<h2 id="heading-5">生产环境的不适应</h2>
+<h1 id="heading-6">坑三：大杂烩，多方向迭代</h1>
+<p>训练迭代了，解决影响了预测</p>
+<h1 id="ci">坑四：CI</h1>
+<h1 id="heading-7">坑五：多硬件支持</h1>
+<h2 id="heading-8">依赖管理</h2>
+<h2 id="heading-9">架构设计</h2>
+<h1 id="heading-10">坑六：文档，文档</h1>
+<h1 id="heading-11">坑七：业务需求</h1>
+<p>业务太多，需求太多</p>
+<h1 id="heading-12">坑八：人力，管理</h1>
+<p>业务太多，需要做的事情太多，人力无法排布</p>
+<h1 id="heading-13">坑九：开关之殇</h1>
+<p>各种 FLAG</p>
+<h1 id="heading-14">坑十：性能性能</h1>
+<p>性能需要耗费巨大的人力，且与硬件相关</p>
+
+    </article>
+    <aside>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading-1">训练框架</a></li>
+    <li><a href="#heading-2">预测</a></li>
+    <li><a href="#heading-3">分布式训练</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#operator-">Operator 的兼容性</a></li>
+    <li><a href="#heading-4">模型粒度的兼容性</a></li>
+    <li><a href="#api">API升级，旧模型旧用法怎么办</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#mvp">MVP的快速构建</a></li>
+    <li><a href="#heading-5">生产环境的不适应</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#heading-8">依赖管理</a></li>
+    <li><a href="#heading-9">架构设计</a></li>
+  </ul>
+</nav>
+    </aside>
+</main>
+
+
+</main>
+    <footer>
+        <h6> |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="http://superjomn.github.io/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>

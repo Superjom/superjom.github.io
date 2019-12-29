@@ -36,12 +36,6 @@
 <nav>
     <ul>
         
-        <li>
-            <a class="" href="/posts/">
-                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
-            </a>
-        </li>
-        
     </ul>
 </nav>
 
@@ -49,43 +43,12 @@
 
 
 
-
-<article>
-
-    <h1>通过 Org Mode 和 hugo 搭建 Blog</h1>
-
-    
-        <aside>
-    <ul>
-        <li>
-            <time class="post-date" datetime="2019-12-26T00:00:00&#43;08:00">Dec 26, 2019</time>
-        </li>
-        
-
-        
-        <li>
-            <em>
-                
-                    
-                    <a href="/tags/howto">#howto</a>
-                
-                    , 
-                    <a href="/tags/hugo">#hugo</a>
-                
-                    , 
-                    <a href="/tags/emacs">#emacs</a>
-                
-            </em>
-        </li>
-        
-
-        <li>One minute read</li>
-    </ul>
-</aside>
-
-    
-
-    <!-- raw HTML omitted -->
+<main>
+    <article>
+    <header>
+        <h1>通过 Org Mode 和 hugo 搭建 Blog</h1>
+    </header>
+        <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <ul>
 <li><a href="#%E5%AE%89%E8%A3%85-hugo">安装 Hugo</a></li>
@@ -144,24 +107,18 @@
 </code></pre></div><p>之后在 emacs 中执行 <code>org-hugo-export-to-md</code> 命令就能够完成 hugo 中 markdown 文章的生成工作，之后到 hugo 站点路径下，执行 hugo 相应命令便可。</p>
 <p>当然也可以通过 <code>org-hugo-auto-export-mode</code> ，当 org 文件编辑时，同步输出到 hugo 中。</p>
 
-
-</article>
-
-
-<section class="post-nav">
-    <ul>
-        
-        
-        <li>
-            <a href="http://superjomn.github.io/posts/leetcode-list/">Linked List Related Algorithms (WIP) <i class="fa fa-chevron-circle-right"></i> </a>
-        </li>
-        
-    </ul>
-</section>
-    
-
-
-
+    </article>
+    <aside>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装-hugo">安装 Hugo</a></li>
+    <li><a href="#emacs-中安装-ox-hugo">emacs 中安装 ox-hugo</a></li>
+    <li><a href="#新建-hugo-站点">新建 hugo 站点</a></li>
+    <li><a href="#整体打通">整体打通</a></li>
+  </ul>
+</nav>
+    </aside>
+</main>
 
 
 </main>
