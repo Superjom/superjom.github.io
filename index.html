@@ -48,28 +48,6 @@
         <ul>
           
           <li class="first">
-            <h1><a href="http://superjomn.github.io/posts/design_pattern_builder/" title="Builer Design Pattern">Builer Design Pattern</a></h1> 
-            <aside>
-    <ul>
-        <li>
-            <time class="post-date" datetime="2019-12-29T00:00:00Z">Dec 29, 2019</time>
-        </li>
-        
-
-        
-
-        <li>One minute read</li>
-    </ul>
-</aside>
-
-            <p>简介 Builder Pattern 可以用来帮助创建构造函数很多备选参数的复杂类，比如定义一个 Computer 类
-class Computer {public:Computer(GrapicsCard g, Monitor m, Process p, Memory ram):graphics_card_(g),monitors_(m),processor_(p),ram_(ram) { ... }private:GraphicsCard graphics_card_;Monitor monitors_;Processor processor_;Memory ram_;};// usageComputer compter(g, m, p, ram); // hard to readBuilder 能够以更可读的方式实现</p>
-            
-            <a href="/posts/design_pattern_builder/">Read more…</a>
-            
-          </li>
-          
-          <li >
             <h1><a href="http://superjomn.github.io/posts/design_pattern_visitor/" title="Visitor Design Pattern">Visitor Design Pattern</a></h1> 
             <aside>
     <ul>
@@ -90,102 +68,6 @@ class Pet {public:virtual void Stroke() = 0;virtual void Feed() = 0;};对�
 class Cat : public Pet {public:void Stroke() override { /* cat stroke way */ }void Feed() override { /* cat feed way */ }};class Dog : public Pet {public:void Stroke() override { /* dog stroke way */ }void Feed() override { /* dog feed way */ }};类似 Pet 这样的接口实现，会有如下问题：</p>
             
             <a href="/posts/design_pattern_visitor/">Read more…</a>
-            
-          </li>
-          
-          <li >
-            <h1><a href="http://superjomn.github.io/posts/leetcode_bst/" title="BST related">BST related</a></h1> 
-            <aside>
-    <ul>
-        <li>
-            <time class="post-date" datetime="2019-12-28T00:00:00Z">Dec 28, 2019</time>
-        </li>
-        
-
-        
-
-        <li>One minute read</li>
-    </ul>
-</aside>
-
-            <p>[toc]
-常用技巧 经典题型 BST Generation https://leetcode.com/problems/unique-binary-search-trees-ii/
-def generate(n):def helper(l, r):trees = []if l == r:trees.append(TreeNode(l))elif l &lt; r:for m in range(l, r+1): # note, there is n+1 ls = helper(l, m-1)rs = helper(m+1, r)ls = ls if ls else [None]rs = rs if rs else [None]for lt in ls:for rt in rs:mid = TreeNode(m)mid.</p>
-            
-            <a href="/posts/leetcode_bst/">Read more…</a>
-            
-          </li>
-          
-          <li >
-            <h1><a href="http://superjomn.github.io/posts/design_pattern_observer/" title="Design Pattern Observer 观察者模式">Design Pattern Observer 观察者模式</a></h1> 
-            <aside>
-    <ul>
-        <li>
-            <time class="post-date" datetime="2019-12-28T00:00:00Z">Dec 28, 2019</time>
-        </li>
-        
-
-        
-
-        <li>One minute read</li>
-    </ul>
-</aside>
-
-            <p>想象这样的场景，为气象站设计一整套系统，支持订阅功能，不同的仪器，比如手机、LED显示屏在天气发生大的变化时，会自动收到更新信息。
-其中的挑战有
- 订阅的设备的列表可能随时发生变化  比如，手机没电下线了；或者一个新的手机加入了订阅   气象站的带宽有限，订阅设备数可能很大  所以，无法支持每种设备简单 while(true) { sleep(20); request_for_data(); } 的实现   更新需要实时  类似这样的场景，就是观察者模式适用的。
-接口定义 class Observable; class Observer { public: // Update the state of this observer.</p>
-            
-            <a href="/posts/design_pattern_observer/">Read more…</a>
-            
-          </li>
-          
-          <li >
-            <h1><a href="http://superjomn.github.io/posts/leetcode_list/" title="Linked List related">Linked List related</a></h1> 
-            <aside>
-    <ul>
-        <li>
-            <time class="post-date" datetime="2019-12-28T00:00:00Z">Dec 28, 2019</time>
-        </li>
-        
-
-        
-
-        <li>One minute read</li>
-    </ul>
-</aside>
-
-            <p>[toc]
-常用技巧 reverse head = ... # the head of the list fake = ListNode(-1) # create a faked node for easier operation fake.next = head p = fake.next while p: tmp = p.</p>
-            
-            <a href="/posts/leetcode_list/">Read more…</a>
-            
-          </li>
-          
-          <li >
-            <h1><a href="http://superjomn.github.io/posts/challenges-in-deep-learning-platform/" title="深度学习平台开发中的十个“坑”">深度学习平台开发中的十个“坑”</a></h1> 
-            <aside>
-    <ul>
-        <li>
-            <time class="post-date" datetime="2019-12-28T00:00:00Z">Dec 28, 2019</time>
-        </li>
-        
-
-        
-
-        <li>One minute read</li>
-    </ul>
-</aside>
-
-            <p>从事 PaddlePaddle 深度学习平台已经过二.五载，完整经历了 Paddle Fluid 架构从无到有到如今相对稳定，相关的所看所干所思已经有一定积累了，这段时间整理下来。
-PaddlePaddle 是类似 TensorFlow 的深度学习平台，包括训练（分布式）、预测、Hub、Serving 等完整自主工作链，这块在国内还是非常难得的。
-类似这样规模的系统是一个硬骨头，能到与各超大体量的公司（谷歌、Facebook、Amazon）在局部战役上达到一定的分庭抗礼的局面，这个对于 Team 已经是以小博大比较显著的成果了，但革命尚未成功，同志们仍需努力。
-我整理了个人理解中，开发过程中的十个“坑”，所谓坑，这里定义为“困难”；有坑就应该有填坑的方法，但惭愧的是，其中有几个尚没有个人能够接受的解决方法，只能给出一部分思考，以期抛砖引玉。
-在阐述中，我会避免涉及 PaddlePaddle 中具体实施的方案，而以普世的例子给出，以避免一些困扰。
-深度学习平台简介 训练框架 预测 分布式训练 坑一： 兼容性之殇 当最早的DNN平台迭代几个版本后，兼容性问题就开始凸显了。
-Operator 的兼容性 模型粒度的兼容性 API升级，旧模型旧用法怎么办 坑二：MVP vs 生产环境 MVP的快速构建 生产环境的不适应 坑三：大杂烩，多方向迭代 训练迭代了，解决影响了预测</p>
-            
-            <a href="/posts/challenges-in-deep-learning-platform/">Read more…</a>
             
           </li>
           
@@ -285,6 +167,25 @@ org-mode + ox-huge 是目前我能找到的最方便的工具，当然我本人�
           
           <li >
             <h1><a href="http://superjomn.github.io/posts/leetcode_dp/" title=""></a></h1> 
+            <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="0001-01-01T00:00:00Z">Jan 1, 0001</time>
+        </li>
+        
+
+        
+
+        <li>0 minutes read</li>
+    </ul>
+</aside>
+
+            <p></p>
+            
+          </li>
+          
+          <li >
+            <h1><a href="http://superjomn.github.io/posts/leetcode_tree/" title=""></a></h1> 
             <aside>
     <ul>
         <li>
