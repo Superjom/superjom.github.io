@@ -12,6 +12,82 @@
        
        
        <item>
+         <title>Builer Design Pattern</title>
+         <link>http://superjomn.github.io/posts/design_pattern_builder/</link>
+         <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
+         
+         <guid>http://superjomn.github.io/posts/design_pattern_builder/</guid>
+         <description>&lt;h1 id=&#34;heading&#34;&gt;简介&lt;/h1&gt;
+&lt;p&gt;Builder Pattern 可以用来帮助创建构造函数很多备选参数的复杂类，比如定义一个 Computer 类&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Computer&lt;/span&gt; {
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+    Computer(GrapicsCard g, Monitor m, Process p, Memory ram)
+    &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;graphics_card_(g),
+     monitors_(m),
+     processor_(p),
+     ram_(ram) { ... }
+&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+    GraphicsCard graphics_card_;
+    Monitor monitors_;
+    Processor processor_;
+    Memory ram_;
+};
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// usage
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;Computer &lt;span style=&#34;color:#a6e22e&#34;&gt;compter&lt;/span&gt;(g, m, p, ram); &lt;span style=&#34;color:#75715e&#34;&gt;// hard to read
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Builder 能够以更可读的方式实现&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ComputerBuilder&lt;/span&gt;;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Computer&lt;/span&gt; {
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;// Pass a pointer for std::move some heavy members.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    Computer(ComputerBuilder&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; builder);
+&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+    GraphicsCard graphics_card_;
+    Monitor monitors_;
+    Processor processor_;
+    Memory ram_;
+};
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// in cpp file
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;Computer:Computer(ComputerBuilder&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; builder) {
+    graphics_card_ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; builder&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;graphics_card();
+    monitors_ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; builder&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;monitors();
+    processors_ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; builder&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;processor();
+    ram_ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; builder&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;ram();
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ComputerBuilder&lt;/span&gt; {
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+    CompterBuilder() &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;;
+    
+    ComputerBuilder&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; SetGraphicsCard(GraphicsCard x) { graphics_card_ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x; }
+   	ComputerBuilder&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; SetMonitor(Monitor&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; x) { monitors_ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x; }
+    ComputerBuilder&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; SetProcessors(Processor&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; x) { processors_ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x; }
+    ComputerBuilder&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; SetMemory(Memory&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; x) { ram_ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x; }
+    Computer &lt;span style=&#34;color:#a6e22e&#34;&gt;Build&lt;/span&gt;() { &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Computer(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;); }
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+    GraphicsCard graphics_card_;
+    Monitor monitors_;
+    Processor processor_;
+    Memory ram_;    
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;auto&lt;/span&gt; computer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ComputerBuilder().SetGraphicsCard(...)
+                                 .SetMonitor(...)
+                                 .SetProcessors(...)
+                                 .SetMemory(...)
+                                 .Build();
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;heading-1&#34;&gt;实际应用&lt;/h1&gt;
+&lt;p&gt;TensorFlow 里的 operator 的注册有用到，具体可以参考任何 operator 的 .cc 文件&lt;/p&gt;
+&lt;h1 id=&#34;reference&#34;&gt;Reference&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://riptutorial.com/design-patterns/example/12132/builder-pattern---java-implementation&#34;&gt;Builder pattern - Java implementation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+       </item>
+       
+       <item>
          <title>Visitor Design Pattern</title>
          <link>http://superjomn.github.io/posts/design_pattern_visitor/</link>
          <pubDate>Sun, 29 Dec 2019 00:00:00 +0000</pubDate>
@@ -193,6 +269,98 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://cpppatterns.com/patterns/visitor.html&#34;&gt;C++ Pattern&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.geeksforgeeks.org/visitor-design-pattern/&#34;&gt;Visitor Design Pattern - GeeksforGeeks&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+       </item>
+       
+       <item>
+         <title>Design Pattern Observer 观察者模式</title>
+         <link>http://superjomn.github.io/posts/design_pattern_observer/</link>
+         <pubDate>Sat, 28 Dec 2019 00:00:00 +0000</pubDate>
+         
+         <guid>http://superjomn.github.io/posts/design_pattern_observer/</guid>
+         <description>&lt;p&gt;想象这样的场景，为气象站设计一整套系统，支持订阅功能，不同的仪器，比如手机、LED显示屏在天气发生大的变化时，会自动收到更新信息。&lt;/p&gt;
+&lt;p&gt;其中的挑战有&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;订阅的设备的列表可能随时发生变化
+&lt;ol&gt;
+&lt;li&gt;比如，手机没电下线了；或者一个新的手机加入了订阅&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;气象站的带宽有限，订阅设备数可能很大
+&lt;ol&gt;
+&lt;li&gt;所以，无法支持每种设备简单 &lt;code&gt;while(true) { sleep(20); request_for_data(); }&lt;/code&gt; 的实现&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;更新需要实时&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;类似这样的场景，就是观察者模式适用的。&lt;/p&gt;
+&lt;h1 id=&#34;heading&#34;&gt;接口定义&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Observable&lt;/span&gt;;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Observer&lt;/span&gt; {
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;// Update the state of this observer.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;virtual&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; Update(Observable&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; obs) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;    
+};
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Observable&lt;/span&gt; {
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;// Register an observer.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;virtual&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; RegisterObserver(Observer &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;observer) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;
+    &lt;span style=&#34;color:#75715e&#34;&gt;// Notify all the registered observers when a change happened.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;virtual&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;NotifyObservers&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;heading-1&#34;&gt;具体实现&lt;/h1&gt;
+&lt;p&gt;以 Weather station 为例，我们创建一些基础设施：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;WeatherData&lt;/code&gt; 作为被观察者，被其他 observer 观察&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Client&lt;/code&gt; 作为观察者，订阅和观察 &lt;code&gt;WeatherData&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;observable-&#34;&gt;Observable 实现&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;WeatherData&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Observable {
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; RegisterObserver(Observer&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; observer) &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; {
+        observers_.push_back(observer);
+    }
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;NotifyObservers&lt;/span&gt;() {
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;changed_) &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;; &lt;span style=&#34;color:#75715e&#34;&gt;// avoid unnecessary update.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;auto&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; observer: observers) {
+            observer&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;Update(&lt;span style=&#34;color:#66d9ef&#34;&gt;this&lt;/span&gt;);
+        }
+        changed_ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; true;
+    }
+    
+    &lt;span style=&#34;color:#75715e&#34;&gt;// getter
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;temperature&lt;/span&gt;() &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; { &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; temperature_; }
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;float&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;humidity&lt;/span&gt;() &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; { &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; humidity_; }
+    
+&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;// Mark whether the state is changed recently.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;bool&lt;/span&gt; changed_{false};
+    &lt;span style=&#34;color:#75715e&#34;&gt;// the whether states are as follows
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;float&lt;/span&gt; temperature_{};
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;float&lt;/span&gt; humidity_{};
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;observer-&#34;&gt;Observer 实现&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Client&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Observer {
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; Update(Observer&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; obs) &lt;span style=&#34;color:#66d9ef&#34;&gt;override&lt;/span&gt; {
+        &lt;span style=&#34;color:#75715e&#34;&gt;// Here is compatible with different kinds of Observer
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;auto&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; theobs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;dynamic_cast&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;WeatherData&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(obs);
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (theobs) {
+            &lt;span style=&#34;color:#75715e&#34;&gt;// do something
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;            DisplayTemperature(theobs&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;temperature());
+            DisplayHumidity(theobs&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;humidity());
+        }
+    }
+    
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;DisplayTemperature&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;float&lt;/span&gt; x) &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt;;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;DisplayHumidity&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;float&lt;/span&gt; x) &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;references&#34;&gt;References&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Head First 设计模式&lt;/li&gt;
 &lt;/ul&gt;
 </description>
        </item>

@@ -48,6 +48,28 @@
         <ul>
           
           <li class="first">
+            <h1><a href="http://superjomn.github.io/posts/design_pattern_builder/" title="Builer Design Pattern">Builer Design Pattern</a></h1> 
+            <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2019-12-29T00:00:00Z">Dec 29, 2019</time>
+        </li>
+        
+
+        
+
+        <li>One minute read</li>
+    </ul>
+</aside>
+
+            <p>简介 Builder Pattern 可以用来帮助创建构造函数很多备选参数的复杂类，比如定义一个 Computer 类
+class Computer {public:Computer(GrapicsCard g, Monitor m, Process p, Memory ram):graphics_card_(g),monitors_(m),processor_(p),ram_(ram) { ... }private:GraphicsCard graphics_card_;Monitor monitors_;Processor processor_;Memory ram_;};// usageComputer compter(g, m, p, ram); // hard to readBuilder 能够以更可读的方式实现</p>
+            
+            <a href="/posts/design_pattern_builder/">Read more…</a>
+            
+          </li>
+          
+          <li >
             <h1><a href="http://superjomn.github.io/posts/design_pattern_visitor/" title="Visitor Design Pattern">Visitor Design Pattern</a></h1> 
             <aside>
     <ul>
@@ -68,6 +90,30 @@ class Pet {public:virtual void Stroke() = 0;virtual void Feed() = 0;};对�
 class Cat : public Pet {public:void Stroke() override { /* cat stroke way */ }void Feed() override { /* cat feed way */ }};class Dog : public Pet {public:void Stroke() override { /* dog stroke way */ }void Feed() override { /* dog feed way */ }};类似 Pet 这样的接口实现，会有如下问题：</p>
             
             <a href="/posts/design_pattern_visitor/">Read more…</a>
+            
+          </li>
+          
+          <li >
+            <h1><a href="http://superjomn.github.io/posts/design_pattern_observer/" title="Design Pattern Observer 观察者模式">Design Pattern Observer 观察者模式</a></h1> 
+            <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2019-12-28T00:00:00Z">Dec 28, 2019</time>
+        </li>
+        
+
+        
+
+        <li>One minute read</li>
+    </ul>
+</aside>
+
+            <p>想象这样的场景，为气象站设计一整套系统，支持订阅功能，不同的仪器，比如手机、LED显示屏在天气发生大的变化时，会自动收到更新信息。
+其中的挑战有
+ 订阅的设备的列表可能随时发生变化  比如，手机没电下线了；或者一个新的手机加入了订阅   气象站的带宽有限，订阅设备数可能很大  所以，无法支持每种设备简单 while(true) { sleep(20); request_for_data(); } 的实现   更新需要实时  类似这样的场景，就是观察者模式适用的。
+接口定义 class Observable; class Observer { public: // Update the state of this observer.</p>
+            
+            <a href="/posts/design_pattern_observer/">Read more…</a>
             
           </li>
           
