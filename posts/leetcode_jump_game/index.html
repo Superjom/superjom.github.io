@@ -1,0 +1,195 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Superjomn&#39;s Blog</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="Superjomn" /><meta name="generator" content="Hugo 0.62.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+  <script src="https://kit.fontawesome.com/b76b73e8e8.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Superjomn's Blog</a>
+            </h1>
+
+      <ul id="social-media">
+        
+        
+          
+        <li><a href="https://github.com/Superjomn"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a></li>
+           
+      </ul>
+      
+      <p><em>Superjomn's blog</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+    <main>
+
+
+
+<main>
+    <article>
+    <header>
+        <h1>Leetcode Jump game</h1>
+    </header>
+        <p>[TOC]</p>
+<h2 id="-1">问题 1</h2>
+<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
+<p>Each element in the array represents your <strong>maximum jump length</strong> at that position.</p>
+<p>Determine if you are able to reach the last index.</p>
+<p><strong>Example 1:</strong></p>
+<pre><code>Input: [2,3,1,1,4]
+Output: true
+Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.
+</code></pre><p><strong>Example 2:</strong></p>
+<pre><code>Input: [3,2,1,0,4]
+Output: false
+Explanation: You will always arrive at index 3 no matter what. Its maximum
+             jump length is 0, which makes it impossible to reach the last index.
+</code></pre><p>可以用一个简单的DP，用于记录每步可以 jump 的最长距离，当这个距离可以达到终点时，便可以返回 true</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>(object):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">canJump</span>(self, nums):
+        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74"></span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :type nums: List[int]</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :rtype: bool</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        </span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        pos <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        N <span style="color:#f92672">=</span> len(nums)
+        maxsteps <span style="color:#f92672">=</span> nums[<span style="color:#ae81ff">0</span>]
+        <span style="color:#66d9ef">while</span> pos <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> maxsteps:
+            maxsteps <span style="color:#f92672">=</span> max(maxsteps, pos <span style="color:#f92672">+</span> nums[pos])
+            <span style="color:#66d9ef">if</span> maxsteps <span style="color:#f92672">&gt;</span><span style="color:#f92672">=</span> N<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>: <span style="color:#66d9ef">return</span> True
+            pos <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+        <span style="color:#66d9ef">return</span> False
+</code></pre></div><h2 id="2--jump-">问题2 最少 Jump 数</h2>
+<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.</p>
+<p>Each element in the array represents your maximum jump length at that position.</p>
+<p>Your goal is to reach the last index in the minimum number of jumps.</p>
+<p><strong>Example:</strong></p>
+<pre><code>Input: [2,3,1,1,4]
+Output: 2
+Explanation: The minimum number of jumps to reach the last index is 2.
+    Jump 1 step from index 0 to 1, then 3 steps to the last index.
+</code></pre><p><strong>Note:</strong></p>
+<p>You can assume that you can always reach the last index.</p>
+<p>使用 BFS，用 <code>[left, right]</code>记录每次能够达到的范围</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>(object):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">jump</span>(self, nums):
+        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74"></span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :type nums: List[int]</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :rtype: int</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        </span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        <span style="color:#75715e"># memo records the minimum jump times to reatch the current position</span>
+        N <span style="color:#f92672">=</span> len(nums)
+        <span style="color:#66d9ef">if</span> N <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>: <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+        
+        queue <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>]
+       
+        level <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        <span style="color:#75715e"># bound of each level</span>
+        left <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        right <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        maxv <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        <span style="color:#66d9ef">while</span> queue:
+            <span style="color:#75715e"># visit top</span>
+            levels <span style="color:#f92672">=</span> []
+            <span style="color:#66d9ef">for</span> v <span style="color:#f92672">in</span> queue:
+                <span style="color:#66d9ef">if</span> v <span style="color:#f92672">==</span> N<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>: <span style="color:#66d9ef">return</span> level
+                maxv <span style="color:#f92672">=</span> max(maxv, v<span style="color:#f92672">+</span>nums[v])
+            left <span style="color:#f92672">=</span> right
+            right <span style="color:#f92672">=</span> maxv
+            
+            queue <span style="color:#f92672">=</span> []
+            <span style="color:#66d9ef">for</span> v <span style="color:#f92672">in</span> xrange(left<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, right<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>):
+                queue<span style="color:#f92672">.</span>append(v)
+            
+            level <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+        <span style="color:#66d9ef">return</span> level
+</code></pre></div><p><a href="https://leetcode.com/problems/jump-game-ii/discuss/474943/Python-GreedyBFS-tow-solutions-with-explanation">https://leetcode.com/problems/jump-game-ii/discuss/474943/Python-GreedyBFS-tow-solutions-with-explanation</a></p>
+<h2 id="3">问题3</h2>
+<p>Given an array of non-negative integers <code>arr</code>, you are initially positioned at <code>start</code> index of the array. When you are at index <code>i</code>, you can jump to <code>i + arr[i]</code> or <code>i - arr[i]</code>, check if you can reach to <strong>any</strong> index with value 0.</p>
+<p>Notice that you can not jump outside of the array at any time.</p>
+<p><strong>Example 1:</strong></p>
+<pre><code>Input: arr = [4,2,3,0,3,1,2], start = 5
+Output: true
+Explanation: 
+All possible ways to reach at index 3 with value 0 are: 
+index 5 -&gt; index 4 -&gt; index 1 -&gt; index 3 
+index 5 -&gt; index 6 -&gt; index 4 -&gt; index 1 -&gt; index 3 
+</code></pre><p><strong>Example 2:</strong></p>
+<pre><code>Input: arr = [4,2,3,0,3,1,2], start = 0
+Output: true 
+Explanation: 
+One possible way to reach at index 3 with value 0 is: 
+index 0 -&gt; index 4 -&gt; index 1 -&gt; index 3
+</code></pre><p><strong>Example 3:</strong></p>
+<pre><code>Input: arr = [3,0,2,1,2], start = 2
+Output: false
+Explanation: There is no way to reach at index 1 with value 0.
+</code></pre><p><strong>Constraints:</strong></p>
+<ul>
+<li><code>1 &lt;= arr.length &lt;= 5 * 10^4</code></li>
+<li><code>0 &lt;= arr[i] &lt; arr.length</code></li>
+<li><code>0 &lt;= start &lt; arr.length</code></li>
+</ul>
+<p>采用普通的 DFS</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>(object):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">canReach</span>(self, arr, start):
+        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74"></span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :type arr: List[int]</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :type start: int</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :rtype: bool</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        </span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        <span style="color:#66d9ef">if</span> arr[start] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">return</span> True
+        <span style="color:#66d9ef">if</span> arr[start] <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>: <span style="color:#66d9ef">return</span> False
+        
+        tmp <span style="color:#f92672">=</span> arr[start]
+        arr[start] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+        
+        left <span style="color:#f92672">=</span> start <span style="color:#f92672">-</span> tmp
+        right <span style="color:#f92672">=</span> start <span style="color:#f92672">+</span> tmp
+        <span style="color:#66d9ef">if</span> left <span style="color:#f92672">&gt;</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">and</span> self<span style="color:#f92672">.</span>canReach(arr, left): <span style="color:#66d9ef">return</span> True
+        <span style="color:#66d9ef">if</span> right <span style="color:#f92672">&lt;</span> len(arr) <span style="color:#f92672">and</span> self<span style="color:#f92672">.</span>canReach(arr, right): <span style="color:#66d9ef">return</span> True
+        <span style="color:#66d9ef">return</span> False
+</code></pre></div>
+    </article>
+    <aside>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-1">问题 1</a></li>
+    <li><a href="#2--jump-">问题2 最少 Jump 数</a></li>
+    <li><a href="#3">问题3</a></li>
+  </ul>
+</nav>
+    </aside>
+</main>
+
+
+</main>
+    <footer>
+        <h6> |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="http://superjomn.github.io/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>

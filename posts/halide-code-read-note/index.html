@@ -1,0 +1,358 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Superjomn&#39;s Blog</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="Superjomn" /><meta name="generator" content="Hugo 0.62.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+  <script src="https://kit.fontawesome.com/b76b73e8e8.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Superjomn's Blog</a>
+            </h1>
+
+      <ul id="social-media">
+        
+        
+          
+        <li><a href="https://github.com/Superjomn"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a></li>
+           
+      </ul>
+      
+      <p><em>Superjomn's blog</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+    <main>
+
+
+
+<main>
+    <article>
+    <header>
+        <h1>Halide 代码阅读笔记</h1>
+    </header>
+        <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<ul>
+<li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#%E7%90%86%E8%A7%A3-halide-dsl-%E8%AF%AD%E6%B3%95">理解 Halide DSL 语法</a>
+<ul>
+<li><a href="#basics">Basics</a></li>
+<li><a href="#vectorize-parallelize-unroll-dot-dot-dot">Vectorize, Parallelize, Unroll &hellip;</a></li>
+</ul>
+</li>
+<li><a href="#type-%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F">Type - 类型系统</a></li>
+<li><a href="#ir">IR</a>
+<ul>
+<li><a href="#%E6%95%B0%E5%AD%A6%E8%AE%A1%E7%AE%97%E7%9B%B8%E5%85%B3-ir">数学计算相关 IR</a></li>
+<li><a href="#%E5%8A%9F%E8%83%BD-ir">功能 IR</a></li>
+<li><a href="#%E5%A4%8D%E6%9D%82-ir">复杂 IR</a></li>
+<li><a href="#stmt-%E5%92%8C-expr-%E7%9A%84%E5%8C%BA%E5%88%AB">Stmt 和 Expr 的区别</a></li>
+</ul>
+</li>
+<li><a href="#ir-%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C">IR 相关操作</a>
+<ul>
+<li><a href="#equality">Equality</a></li>
+<li><a href="#print">Print</a></li>
+<li><a href="#simplify">Simplify</a></li>
+<li><a href="#unrollloops">UnrollLoops</a></li>
+<li><a href="#vectorizeloops">VectorizeLoops</a></li>
+</ul>
+</li>
+<li><a href="#lower">Lower</a>
+<ul>
+<li><a href="#bounds-inference">bounds inference</a></li>
+<li><a href="#slidding-window">slidding window</a></li>
+<li><a href="#simplify">simplify</a></li>
+<li><a href="#storage-folding">storage folding</a></li>
+<li><a href="#storage-flattening">storage flattening</a></li>
+<li><a href="#vectorize-loops">vectorize loops</a></li>
+<li><a href="#unroll-loops">unroll loops</a></li>
+<li><a href="#rewrite-interleavings">rewrite interleavings</a></li>
+<li><a href="#remove-trivial-for-loops">remove trivial for loops</a></li>
+<li><a href="#remove-dead-lets">remove dead lets</a></li>
+</ul>
+</li>
+<li><a href="#scope">Scope</a></li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="前言">前言</h2>
+<p>Halide 是一个用于图像处理加速的 DSL，其底层是一个相对完善的 NN Compiler，相关 IR 已经被 TVM, Tiramisu, Polymage 等多个项目使用。</p>
+<p>本人也曾手撸过一个 NN Compiler 的原型，想通过 Polyhedral compilation 的相关工具链绕过手写 Halide 中底层优化策略，但老实说不是特别成功，Code genration 中 &ldquo;dirty work&rdquo; 貌似是必须的。</p>
+<p>本文是我重读 Halide 代码后做的笔记，其中侧重 Code generation 相关逻辑。</p>
+<p>Halide 代码注释是几个开源 NN Compiler 中比较完善的，思路也非常清晰，比较易于阅读。</p>
+<h2 id="理解-halide-dsl-语法">理解 Halide DSL 语法</h2>
+<p>理解 Halide 的语法有助于宏观了解其架构设计，具体可以参考<a href="https://halide-lang.org/tutorials/tutorial%5Fintroduction.html">教程</a></p>
+<h3 id="basics">Basics</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++">Halide<span style="color:#f92672">:</span><span style="color:#f92672">:</span>Func gradient;
+
+Halide<span style="color:#f92672">:</span><span style="color:#f92672">:</span>Var x, y;
+
+Halide : Expr e <span style="color:#f92672">=</span> x <span style="color:#f92672">+</span> y;
+
+gradient(x, y) <span style="color:#f92672">=</span> e;
+
+Halide<span style="color:#f92672">:</span><span style="color:#f92672">:</span>Buffer<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int32_t</span><span style="color:#f92672">&gt;</span> output <span style="color:#f92672">=</span> gradient.realize(<span style="color:#ae81ff">800</span>, <span style="color:#ae81ff">600</span>);
+</code></pre></div><h3 id="vectorize-parallelize-unroll-dot-dot-dot">Vectorize, Parallelize, Unroll &hellip;</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++"><span style="color:#75715e">// Are you ready? We&#39;re going to use all of the features above now.
+</span><span style="color:#75715e"></span>Func <span style="color:#a6e22e">gradient_fast</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">gradient_fast</span><span style="color:#e6db74">&#34;</span>);
+gradient_fast(x, y) <span style="color:#f92672">=</span> x <span style="color:#f92672">+</span> y;
+
+<span style="color:#75715e">// We&#39;ll process 64x64 tiles in parallel.
+</span><span style="color:#75715e"></span>Var x_outer, y_outer, x_inner, y_inner, tile_index;
+gradient_fast.tile(x, y, x_outer, y_outer, x_inner, y_inner, <span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">64</span>)
+    .fuse(x_outer, y_outer, tile_index)
+    .parallel(tile_index);
+
+<span style="color:#75715e">// We&#39;ll compute two scanlines at once while we walk across
+</span><span style="color:#75715e"></span><span style="color:#75715e">// each tile. We&#39;ll also vectorize in x. The easiest way to
+</span><span style="color:#75715e"></span><span style="color:#75715e">// express this is to recursively tile again within each tile
+</span><span style="color:#75715e"></span><span style="color:#75715e">// into 4x2 subtiles, then vectorize the subtiles across x and
+</span><span style="color:#75715e"></span><span style="color:#75715e">// unroll them across y:
+</span><span style="color:#75715e"></span>Var x_inner_outer, y_inner_outer, x_vectors, y_pairs;
+gradient_fast
+    .tile(x_inner, y_inner, x_inner_outer, y_inner_outer, x_vectors, y_pairs, <span style="color:#ae81ff">4</span>,
+          <span style="color:#ae81ff">2</span>)
+    .vectorize(x_vectors)
+    .unroll(y_pairs);
+
+<span style="color:#75715e">// Note that we didn&#39;t do any explicit splitting or
+</span><span style="color:#75715e"></span><span style="color:#75715e">// reordering. Those are the most important primitive
+</span><span style="color:#75715e"></span><span style="color:#75715e">// operations, but mostly they are buried underneath tiling,
+</span><span style="color:#75715e"></span><span style="color:#75715e">// vectorizing, or unrolling calls.
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// Now let&#39;s evaluate this over a range which is not a
+</span><span style="color:#75715e"></span><span style="color:#75715e">// multiple of the tile size.
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// If you like you can turn on tracing, but it&#39;s going to
+</span><span style="color:#75715e"></span><span style="color:#75715e">// produce a lot of printfs. Instead we&#39;ll compute the answer
+</span><span style="color:#75715e"></span><span style="color:#75715e">// both in C and Halide and see if the answers match.
+</span><span style="color:#75715e"></span>Buffer<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> gradient_fast.realize(<span style="color:#ae81ff">350</span>, <span style="color:#ae81ff">250</span>);
+</code></pre></div><h2 id="type-类型系统">Type - 类型系统</h2>
+<p>位于 <code>Type.h</code> 中，包含的类型包括</p>
+<ul>
+<li><code>Int</code></li>
+<li><code>UInt</code></li>
+<li><code>Float</code></li>
+<li><code>Array&lt;T&gt;</code> ，上述三种基本类型构成的数组</li>
+</ul>
+<h2 id="ir">IR</h2>
+<p>所有 IR 节点位于 <a href="https://github.com/halide/Halide/blob/master/src/IR.h">IR.h</a></p>
+<h3 id="数学计算相关-ir">数学计算相关 IR</h3>
+<ul>
+<li>Add</li>
+<li>Sub</li>
+<li>Mul</li>
+<li>Div</li>
+<li>&hellip;</li>
+</ul>
+<h3 id="功能-ir">功能 IR</h3>
+<ul>
+<li>Cast</li>
+<li>Load, 从一个 buffer 中加载一个 value</li>
+<li>Broadcast</li>
+<li>Let</li>
+<li>Print, 便于 Debug</li>
+<li>AssertStmt</li>
+<li>Pipeline, ?</li>
+</ul>
+<h3 id="复杂-ir">复杂 IR</h3>
+<ul>
+<li>Select</li>
+<li>For
+<ul>
+<li>Execute the <code>body</code> statement for all values of the variable <code>name</code> from <code>min</code> to <code>min+extent</code></li>
+<li>There are four types of For nodes
+<ul>
+<li>A <code>Serial</code> for loop is a conventional one,</li>
+<li>In a <code>Parallel</code> for loop, each iteration of the loop happens in parallel or in some unspecified order.</li>
+<li>In a <code>Vectorized</code> for loop, each iteration maps to one SIMD lane, and the whole loop is executed in one shot. For this case, <code>extent</code> must be some small integer constant (4, 8 or 16)</li>
+<li>An <code>Unrolled</code> for loop compiles to a completely unrolled version of the loop</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Store, store a <code>value</code> to a <code>buffer</code> at a given <code>index</code>.</li>
+<li>Allocate, allocate a scratch area called with the given name, type and size.</li>
+<li>Range, a single-dimensional span, including all numbers between min and (min+extent-1)</li>
+<li>Region, a multi-dimensional box, <code>vector&lt;Range&gt;</code></li>
+<li>Realize, allocate a <strong><strong>multi-dimensional buffer</strong></strong> of the given type and size</li>
+<li>Block, a sequence of statements to be executed in-order.</li>
+<li>Function, a reference-counted handle to Halide's internal representation of a function, similar to a front-end Func object, but with no syntactic suger.</li>
+<li>Call, a function call. It can be
+<ul>
+<li>a call to some external function(like sin)</li>
+<li>multi-dimensional version of a Load,</li>
+<li>A call to another halide function</li>
+</ul>
+</li>
+<li>Variable, a named variable. Might be
+<ul>
+<li>a loop variable,</li>
+<li>a function argument,</li>
+<li>a parameter,</li>
+<li>a reduction variable,</li>
+<li>something defined by a Let or LetStmt node.</li>
+</ul>
+</li>
+</ul>
+<h3 id="stmt-和-expr-的区别">Stmt 和 Expr 的区别</h3>
+<p>在 Halide 中细分了 Statement 和 Expression 两个概念，在其他一些平台里面只有 Expression.</p>
+<ul>
+<li>Statement 表示无返回值的语句</li>
+<li>Expression 有返回值</li>
+</ul>
+<h2 id="ir-相关操作">IR 相关操作</h2>
+<h3 id="equality">Equality</h3>
+<p>位于 <code>IREquality.h</code> , 用于验证两个 IR 是否等价</p>
+<h3 id="print">Print</h3>
+<p>将整个 IR 输出成可读的格式，便于 debug</p>
+<h3 id="simplify">Simplify</h3>
+<p>简化 IR 相应语句，比如 <code>a = 2+2+0+b</code> 会被简化为 <code>a=4+b</code></p>
+<h3 id="unrollloops">UnrollLoops</h3>
+<p>位于 <code>UnrollLoops.h</code></p>
+<p>将整个 Loop  完全展开。</p>
+<p>之前在用 ISL (polyhderal) 支持 Unroll 时，  操作 <a href="http://isl.gforge.inria.fr/user.html#AST-Generation-Options-Schedule-Tree">schedule tree</a> 部分简直是噩梦。</p>
+<p>Halide 这里的实现非常简洁， 贴下代码 Mark 下。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">visit</span>(<span style="color:#66d9ef">const</span> For <span style="color:#f92672">*</span>for_loop) {
+  <span style="color:#66d9ef">if</span> (for_loop<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>for_type <span style="color:#f92672">=</span><span style="color:#f92672">=</span> For<span style="color:#f92672">:</span><span style="color:#f92672">:</span>Unrolled) {
+    <span style="color:#66d9ef">const</span> IntImm <span style="color:#f92672">*</span>extent <span style="color:#f92672">=</span> for_loop<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>extent.as<span style="color:#f92672">&lt;</span>IntImm<span style="color:#f92672">&gt;</span>();
+    assert(extent <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Can only unroll for loops over a constant extent</span><span style="color:#e6db74">&#34;</span>);
+    Stmt body <span style="color:#f92672">=</span> mutate(for_loop<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>body);
+
+    Block <span style="color:#f92672">*</span>block <span style="color:#f92672">=</span> NULL;
+    <span style="color:#75715e">// Make n copies of the body, each wrapped in a let that defines the loop
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// var for that body
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> extent<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>value <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&gt;</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i<span style="color:#f92672">-</span><span style="color:#f92672">-</span>) {
+      Stmt iter <span style="color:#f92672">=</span> substitute(for_loop<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>name, for_loop<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span>min <span style="color:#f92672">+</span> i, body);
+      block <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Block(iter, block);
+    }
+    stmt <span style="color:#f92672">=</span> block;
+
+  } <span style="color:#66d9ef">else</span> {
+    IRMutator<span style="color:#f92672">:</span><span style="color:#f92672">:</span>visit(for_loop);
+  }
+}
+</code></pre></div><h3 id="vectorizeloops">VectorizeLoops</h3>
+<p>位于 <code>VectorizeLoops.h</code> 。</p>
+<p>支持 SIMD 指令的生成。</p>
+<p>Vectorize 同样用 ISL 直接支持是个大坑，理解底层依旧需要类似 Halide IR 来辅助生成。</p>
+<h2 id="lower">Lower</h2>
+<p>相关操作</p>
+<h3 id="bounds-inference">bounds inference</h3>
+<p>位于 <code>BoundsInference.h</code>.</p>
+<h4 id="bounds">Bounds</h4>
+<p>对 Expr 进行 bound inference，实现位于 <code>Bounds.h</code></p>
+<h4 id="regions-called">regions_called</h4>
+<h3 id="slidding-window">slidding window</h3>
+<h3 id="simplify">simplify</h3>
+<h3 id="storage-folding">storage folding</h3>
+<h3 id="storage-flattening">storage flattening</h3>
+<h3 id="vectorize-loops">vectorize loops</h3>
+<h3 id="unroll-loops">unroll loops</h3>
+<h3 id="rewrite-interleavings">rewrite interleavings</h3>
+<h3 id="remove-trivial-for-loops">remove trivial for loops</h3>
+<h3 id="remove-dead-lets">remove dead lets</h3>
+<h2 id="scope">Scope</h2>
+<p>位于 <code>Scope.h</code> 。</p>
+<p>作用域。</p>
+<p>Members:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++"><span style="color:#66d9ef">int</span> count;
+std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>map<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>string, std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>stack<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>pair<span style="color:#f92672">&lt;</span>T, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> table;
+</code></pre></div><p>进作用域和出作用域部分的实现</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++"><span style="color:#75715e">/** Add a new (name, value) pair to the current scope. Hide old
+</span><span style="color:#75715e"> * values that have this name until we pop this name.
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">push</span>(<span style="color:#66d9ef">const</span> std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>string <span style="color:#f92672">&amp;</span>name, T value) {
+  table[name].push(std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>make_pair(value, count));
+  count<span style="color:#f92672">+</span><span style="color:#f92672">+</span>;
+}
+
+<span style="color:#75715e">/** A name goes out of scope. Restore whatever its old value
+</span><span style="color:#75715e"> * was (or remove it entirely if there was nothing else of the
+</span><span style="color:#75715e"> * same name in an outer scope) */</span>
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">pop</span>(<span style="color:#66d9ef">const</span> std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>string <span style="color:#f92672">&amp;</span>name) {
+  assert(<span style="color:#f92672">!</span>table[name].empty() <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Name not in symbol table</span><span style="color:#e6db74">&#34;</span>);
+  table[name].pop();
+  count<span style="color:#f92672">-</span><span style="color:#f92672">-</span>;
+}
+</code></pre></div>
+    </article>
+    <aside>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#理解-halide-dsl-语法">理解 Halide DSL 语法</a>
+      <ul>
+        <li><a href="#basics">Basics</a></li>
+        <li><a href="#vectorize-parallelize-unroll-dot-dot-dot">Vectorize, Parallelize, Unroll &hellip;</a></li>
+      </ul>
+    </li>
+    <li><a href="#type-类型系统">Type - 类型系统</a></li>
+    <li><a href="#ir">IR</a>
+      <ul>
+        <li><a href="#数学计算相关-ir">数学计算相关 IR</a></li>
+        <li><a href="#功能-ir">功能 IR</a></li>
+        <li><a href="#复杂-ir">复杂 IR</a></li>
+        <li><a href="#stmt-和-expr-的区别">Stmt 和 Expr 的区别</a></li>
+      </ul>
+    </li>
+    <li><a href="#ir-相关操作">IR 相关操作</a>
+      <ul>
+        <li><a href="#equality">Equality</a></li>
+        <li><a href="#print">Print</a></li>
+        <li><a href="#simplify">Simplify</a></li>
+        <li><a href="#unrollloops">UnrollLoops</a></li>
+        <li><a href="#vectorizeloops">VectorizeLoops</a></li>
+      </ul>
+    </li>
+    <li><a href="#lower">Lower</a>
+      <ul>
+        <li><a href="#bounds-inference">bounds inference</a></li>
+        <li><a href="#slidding-window">slidding window</a></li>
+        <li><a href="#simplify">simplify</a></li>
+        <li><a href="#storage-folding">storage folding</a></li>
+        <li><a href="#storage-flattening">storage flattening</a></li>
+        <li><a href="#vectorize-loops">vectorize loops</a></li>
+        <li><a href="#unroll-loops">unroll loops</a></li>
+        <li><a href="#rewrite-interleavings">rewrite interleavings</a></li>
+        <li><a href="#remove-trivial-for-loops">remove trivial for loops</a></li>
+        <li><a href="#remove-dead-lets">remove dead lets</a></li>
+      </ul>
+    </li>
+    <li><a href="#scope">Scope</a></li>
+  </ul>
+</nav>
+    </aside>
+</main>
+
+
+</main>
+    <footer>
+        <h6> |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="http://superjomn.github.io/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>

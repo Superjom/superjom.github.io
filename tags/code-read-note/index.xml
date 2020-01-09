@@ -1,0 +1,269 @@
+
+   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+     <channel>
+       <title>code read note on Superjomn&#39;s Blog</title>
+       <link>http://superjomn.github.io/tags/code-read-note/</link>
+       <description>Recent content in code read note on Superjomn&#39;s Blog</description>
+       <generator>Hugo -- gohugo.io</generator>
+       <language>en-us</language>
+       <lastBuildDate>Thu, 26 Dec 2019 00:00:00 +0800</lastBuildDate>
+       
+           <atom:link href="http://superjomn.github.io/tags/code-read-note/index.xml" rel="self" type="application/rss+xml" />
+       
+       
+       <item>
+         <title>Halide 代码阅读笔记</title>
+         <link>http://superjomn.github.io/posts/halide-code-read-note/</link>
+         <pubDate>Thu, 26 Dec 2019 00:00:00 +0800</pubDate>
+         
+         <guid>http://superjomn.github.io/posts/halide-code-read-note/</guid>
+         <description>&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%89%8D%E8%A8%80&#34;&gt;前言&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E7%90%86%E8%A7%A3-halide-dsl-%E8%AF%AD%E6%B3%95&#34;&gt;理解 Halide DSL 语法&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#basics&#34;&gt;Basics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#vectorize-parallelize-unroll-dot-dot-dot&#34;&gt;Vectorize, Parallelize, Unroll &amp;hellip;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#type-%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F&#34;&gt;Type - 类型系统&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#ir&#34;&gt;IR&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#%E6%95%B0%E5%AD%A6%E8%AE%A1%E7%AE%97%E7%9B%B8%E5%85%B3-ir&#34;&gt;数学计算相关 IR&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%8A%9F%E8%83%BD-ir&#34;&gt;功能 IR&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#%E5%A4%8D%E6%9D%82-ir&#34;&gt;复杂 IR&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#stmt-%E5%92%8C-expr-%E7%9A%84%E5%8C%BA%E5%88%AB&#34;&gt;Stmt 和 Expr 的区别&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#ir-%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C&#34;&gt;IR 相关操作&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#equality&#34;&gt;Equality&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#print&#34;&gt;Print&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#simplify&#34;&gt;Simplify&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#unrollloops&#34;&gt;UnrollLoops&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#vectorizeloops&#34;&gt;VectorizeLoops&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#lower&#34;&gt;Lower&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#bounds-inference&#34;&gt;bounds inference&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#slidding-window&#34;&gt;slidding window&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#simplify&#34;&gt;simplify&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#storage-folding&#34;&gt;storage folding&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#storage-flattening&#34;&gt;storage flattening&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#vectorize-loops&#34;&gt;vectorize loops&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#unroll-loops&#34;&gt;unroll loops&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#rewrite-interleavings&#34;&gt;rewrite interleavings&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#remove-trivial-for-loops&#34;&gt;remove trivial for loops&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#remove-dead-lets&#34;&gt;remove dead lets&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#scope&#34;&gt;Scope&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;Halide 是一个用于图像处理加速的 DSL，其底层是一个相对完善的 NN Compiler，相关 IR 已经被 TVM, Tiramisu, Polymage 等多个项目使用。&lt;/p&gt;
+&lt;p&gt;本人也曾手撸过一个 NN Compiler 的原型，想通过 Polyhedral compilation 的相关工具链绕过手写 Halide 中底层优化策略，但老实说不是特别成功，Code genration 中 &amp;ldquo;dirty work&amp;rdquo; 貌似是必须的。&lt;/p&gt;
+&lt;p&gt;本文是我重读 Halide 代码后做的笔记，其中侧重 Code generation 相关逻辑。&lt;/p&gt;
+&lt;p&gt;Halide 代码注释是几个开源 NN Compiler 中比较完善的，思路也非常清晰，比较易于阅读。&lt;/p&gt;
+&lt;h2 id=&#34;理解-halide-dsl-语法&#34;&gt;理解 Halide DSL 语法&lt;/h2&gt;
+&lt;p&gt;理解 Halide 的语法有助于宏观了解其架构设计，具体可以参考&lt;a href=&#34;https://halide-lang.org/tutorials/tutorial%5Fintroduction.html&#34;&gt;教程&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;basics&#34;&gt;Basics&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;Halide&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;Func gradient;
+
+Halide&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;Var x, y;
+
+Halide : Expr e &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y;
+
+gradient(x, y) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; e;
+
+Halide&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;Buffer&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int32_t&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gradient.realize(&lt;span style=&#34;color:#ae81ff&#34;&gt;800&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;600&lt;/span&gt;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;vectorize-parallelize-unroll-dot-dot-dot&#34;&gt;Vectorize, Parallelize, Unroll &amp;hellip;&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Are you ready? We&amp;#39;re going to use all of the features above now.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;Func &lt;span style=&#34;color:#a6e22e&#34;&gt;gradient_fast&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;gradient_fast&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;);
+gradient_fast(x, y) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// We&amp;#39;ll process 64x64 tiles in parallel.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;Var x_outer, y_outer, x_inner, y_inner, tile_index;
+gradient_fast.tile(x, y, x_outer, y_outer, x_inner, y_inner, &lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;)
+    .fuse(x_outer, y_outer, tile_index)
+    .parallel(tile_index);
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// We&amp;#39;ll compute two scanlines at once while we walk across
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// each tile. We&amp;#39;ll also vectorize in x. The easiest way to
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// express this is to recursively tile again within each tile
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// into 4x2 subtiles, then vectorize the subtiles across x and
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// unroll them across y:
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;Var x_inner_outer, y_inner_outer, x_vectors, y_pairs;
+gradient_fast
+    .tile(x_inner, y_inner, x_inner_outer, y_inner_outer, x_vectors, y_pairs, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,
+          &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;)
+    .vectorize(x_vectors)
+    .unroll(y_pairs);
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Note that we didn&amp;#39;t do any explicit splitting or
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// reordering. Those are the most important primitive
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// operations, but mostly they are buried underneath tiling,
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// vectorizing, or unrolling calls.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;// Now let&amp;#39;s evaluate this over a range which is not a
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// multiple of the tile size.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;// If you like you can turn on tracing, but it&amp;#39;s going to
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// produce a lot of printfs. Instead we&amp;#39;ll compute the answer
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// both in C and Halide and see if the answers match.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;Buffer&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; result &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; gradient_fast.realize(&lt;span style=&#34;color:#ae81ff&#34;&gt;350&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;250&lt;/span&gt;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;type-类型系统&#34;&gt;Type - 类型系统&lt;/h2&gt;
+&lt;p&gt;位于 &lt;code&gt;Type.h&lt;/code&gt; 中，包含的类型包括&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Int&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;UInt&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Float&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Array&amp;lt;T&amp;gt;&lt;/code&gt; ，上述三种基本类型构成的数组&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ir&#34;&gt;IR&lt;/h2&gt;
+&lt;p&gt;所有 IR 节点位于 &lt;a href=&#34;https://github.com/halide/Halide/blob/master/src/IR.h&#34;&gt;IR.h&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;数学计算相关-ir&#34;&gt;数学计算相关 IR&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Add&lt;/li&gt;
+&lt;li&gt;Sub&lt;/li&gt;
+&lt;li&gt;Mul&lt;/li&gt;
+&lt;li&gt;Div&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;功能-ir&#34;&gt;功能 IR&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Cast&lt;/li&gt;
+&lt;li&gt;Load, 从一个 buffer 中加载一个 value&lt;/li&gt;
+&lt;li&gt;Broadcast&lt;/li&gt;
+&lt;li&gt;Let&lt;/li&gt;
+&lt;li&gt;Print, 便于 Debug&lt;/li&gt;
+&lt;li&gt;AssertStmt&lt;/li&gt;
+&lt;li&gt;Pipeline, ?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;复杂-ir&#34;&gt;复杂 IR&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Select&lt;/li&gt;
+&lt;li&gt;For
+&lt;ul&gt;
+&lt;li&gt;Execute the &lt;code&gt;body&lt;/code&gt; statement for all values of the variable &lt;code&gt;name&lt;/code&gt; from &lt;code&gt;min&lt;/code&gt; to &lt;code&gt;min+extent&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;There are four types of For nodes
+&lt;ul&gt;
+&lt;li&gt;A &lt;code&gt;Serial&lt;/code&gt; for loop is a conventional one,&lt;/li&gt;
+&lt;li&gt;In a &lt;code&gt;Parallel&lt;/code&gt; for loop, each iteration of the loop happens in parallel or in some unspecified order.&lt;/li&gt;
+&lt;li&gt;In a &lt;code&gt;Vectorized&lt;/code&gt; for loop, each iteration maps to one SIMD lane, and the whole loop is executed in one shot. For this case, &lt;code&gt;extent&lt;/code&gt; must be some small integer constant (4, 8 or 16)&lt;/li&gt;
+&lt;li&gt;An &lt;code&gt;Unrolled&lt;/code&gt; for loop compiles to a completely unrolled version of the loop&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Store, store a &lt;code&gt;value&lt;/code&gt; to a &lt;code&gt;buffer&lt;/code&gt; at a given &lt;code&gt;index&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Allocate, allocate a scratch area called with the given name, type and size.&lt;/li&gt;
+&lt;li&gt;Range, a single-dimensional span, including all numbers between min and (min+extent-1)&lt;/li&gt;
+&lt;li&gt;Region, a multi-dimensional box, &lt;code&gt;vector&amp;lt;Range&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Realize, allocate a &lt;strong&gt;&lt;strong&gt;multi-dimensional buffer&lt;/strong&gt;&lt;/strong&gt; of the given type and size&lt;/li&gt;
+&lt;li&gt;Block, a sequence of statements to be executed in-order.&lt;/li&gt;
+&lt;li&gt;Function, a reference-counted handle to Halide&#39;s internal representation of a function, similar to a front-end Func object, but with no syntactic suger.&lt;/li&gt;
+&lt;li&gt;Call, a function call. It can be
+&lt;ul&gt;
+&lt;li&gt;a call to some external function(like sin)&lt;/li&gt;
+&lt;li&gt;multi-dimensional version of a Load,&lt;/li&gt;
+&lt;li&gt;A call to another halide function&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Variable, a named variable. Might be
+&lt;ul&gt;
+&lt;li&gt;a loop variable,&lt;/li&gt;
+&lt;li&gt;a function argument,&lt;/li&gt;
+&lt;li&gt;a parameter,&lt;/li&gt;
+&lt;li&gt;a reduction variable,&lt;/li&gt;
+&lt;li&gt;something defined by a Let or LetStmt node.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;stmt-和-expr-的区别&#34;&gt;Stmt 和 Expr 的区别&lt;/h3&gt;
+&lt;p&gt;在 Halide 中细分了 Statement 和 Expression 两个概念，在其他一些平台里面只有 Expression.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Statement 表示无返回值的语句&lt;/li&gt;
+&lt;li&gt;Expression 有返回值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ir-相关操作&#34;&gt;IR 相关操作&lt;/h2&gt;
+&lt;h3 id=&#34;equality&#34;&gt;Equality&lt;/h3&gt;
+&lt;p&gt;位于 &lt;code&gt;IREquality.h&lt;/code&gt; , 用于验证两个 IR 是否等价&lt;/p&gt;
+&lt;h3 id=&#34;print&#34;&gt;Print&lt;/h3&gt;
+&lt;p&gt;将整个 IR 输出成可读的格式，便于 debug&lt;/p&gt;
+&lt;h3 id=&#34;simplify&#34;&gt;Simplify&lt;/h3&gt;
+&lt;p&gt;简化 IR 相应语句，比如 &lt;code&gt;a = 2+2+0+b&lt;/code&gt; 会被简化为 &lt;code&gt;a=4+b&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;unrollloops&#34;&gt;UnrollLoops&lt;/h3&gt;
+&lt;p&gt;位于 &lt;code&gt;UnrollLoops.h&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;将整个 Loop  完全展开。&lt;/p&gt;
+&lt;p&gt;之前在用 ISL (polyhderal) 支持 Unroll 时，  操作 &lt;a href=&#34;http://isl.gforge.inria.fr/user.html#AST-Generation-Options-Schedule-Tree&#34;&gt;schedule tree&lt;/a&gt; 部分简直是噩梦。&lt;/p&gt;
+&lt;p&gt;Halide 这里的实现非常简洁， 贴下代码 Mark 下。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;visit&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; For &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;for_loop) {
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (for_loop&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;for_type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; For&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;Unrolled) {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; IntImm &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;extent &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; for_loop&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;extent.as&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;IntImm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;();
+    assert(extent &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Can only unroll for loops over a constant extent&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;);
+    Stmt body &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; mutate(for_loop&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;body);
+
+    Block &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;block &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; NULL;
+    &lt;span style=&#34;color:#75715e&#34;&gt;// Make n copies of the body, each wrapped in a let that defines the loop
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// var for that body
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; extent&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;value &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;; i &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; i&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;) {
+      Stmt iter &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; substitute(for_loop&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;name, for_loop&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;min &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; i, body);
+      block &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Block(iter, block);
+    }
+    stmt &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; block;
+
+  } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+    IRMutator&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;visit(for_loop);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;vectorizeloops&#34;&gt;VectorizeLoops&lt;/h3&gt;
+&lt;p&gt;位于 &lt;code&gt;VectorizeLoops.h&lt;/code&gt; 。&lt;/p&gt;
+&lt;p&gt;支持 SIMD 指令的生成。&lt;/p&gt;
+&lt;p&gt;Vectorize 同样用 ISL 直接支持是个大坑，理解底层依旧需要类似 Halide IR 来辅助生成。&lt;/p&gt;
+&lt;h2 id=&#34;lower&#34;&gt;Lower&lt;/h2&gt;
+&lt;p&gt;相关操作&lt;/p&gt;
+&lt;h3 id=&#34;bounds-inference&#34;&gt;bounds inference&lt;/h3&gt;
+&lt;p&gt;位于 &lt;code&gt;BoundsInference.h&lt;/code&gt;.&lt;/p&gt;
+&lt;h4 id=&#34;bounds&#34;&gt;Bounds&lt;/h4&gt;
+&lt;p&gt;对 Expr 进行 bound inference，实现位于 &lt;code&gt;Bounds.h&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&#34;regions-called&#34;&gt;regions_called&lt;/h4&gt;
+&lt;h3 id=&#34;slidding-window&#34;&gt;slidding window&lt;/h3&gt;
+&lt;h3 id=&#34;simplify&#34;&gt;simplify&lt;/h3&gt;
+&lt;h3 id=&#34;storage-folding&#34;&gt;storage folding&lt;/h3&gt;
+&lt;h3 id=&#34;storage-flattening&#34;&gt;storage flattening&lt;/h3&gt;
+&lt;h3 id=&#34;vectorize-loops&#34;&gt;vectorize loops&lt;/h3&gt;
+&lt;h3 id=&#34;unroll-loops&#34;&gt;unroll loops&lt;/h3&gt;
+&lt;h3 id=&#34;rewrite-interleavings&#34;&gt;rewrite interleavings&lt;/h3&gt;
+&lt;h3 id=&#34;remove-trivial-for-loops&#34;&gt;remove trivial for loops&lt;/h3&gt;
+&lt;h3 id=&#34;remove-dead-lets&#34;&gt;remove dead lets&lt;/h3&gt;
+&lt;h2 id=&#34;scope&#34;&gt;Scope&lt;/h2&gt;
+&lt;p&gt;位于 &lt;code&gt;Scope.h&lt;/code&gt; 。&lt;/p&gt;
+&lt;p&gt;作用域。&lt;/p&gt;
+&lt;p&gt;Members:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; count;
+std&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;std&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;string, std&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;stack&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;std&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;pair&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;T, &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; table;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;进作用域和出作用域部分的实现&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;/** Add a new (name, value) pair to the current scope. Hide old
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt; * values that have this name until we pop this name.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt; */&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;push&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; std&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;string &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;name, T value) {
+  table[name].push(std&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;make_pair(value, count));
+  count&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;;
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;/** A name goes out of scope. Restore whatever its old value
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt; * was (or remove it entirely if there was nothing else of the
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt; * same name in an outer scope) */&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;pop&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; std&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;string &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;name) {
+  assert(&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;table[name].empty() &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Name not in symbol table&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;);
+  table[name].pop();
+  count&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+       </item>
+       
+     </channel>
+   </rss>

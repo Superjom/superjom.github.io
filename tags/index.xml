@@ -6,7 +6,7 @@
        <description>Recent content in Tags on Superjomn&#39;s Blog</description>
        <generator>Hugo -- gohugo.io</generator>
        <language>en-us</language>
-       <lastBuildDate>Thu, 26 Dec 2019 00:00:00 +0800</lastBuildDate>
+       <lastBuildDate>Thu, 09 Jan 2020 00:00:00 +0800</lastBuildDate>
        
            <atom:link href="http://superjomn.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
        
@@ -14,9 +14,36 @@
        <item>
          <title>algorithm</title>
          <link>http://superjomn.github.io/tags/algorithm/</link>
-         <pubDate>Thu, 26 Dec 2019 00:00:00 +0800</pubDate>
+         <pubDate>Thu, 09 Jan 2020 00:00:00 +0800</pubDate>
          
          <guid>http://superjomn.github.io/tags/algorithm/</guid>
+         <description></description>
+       </item>
+       
+       <item>
+         <title>leetcode</title>
+         <link>http://superjomn.github.io/tags/leetcode/</link>
+         <pubDate>Thu, 09 Jan 2020 00:00:00 +0800</pubDate>
+         
+         <guid>http://superjomn.github.io/tags/leetcode/</guid>
+         <description></description>
+       </item>
+       
+       <item>
+         <title>devide</title>
+         <link>http://superjomn.github.io/tags/devide/</link>
+         <pubDate>Mon, 30 Dec 2019 00:00:00 +0800</pubDate>
+         
+         <guid>http://superjomn.github.io/tags/devide/</guid>
+         <description></description>
+       </item>
+       
+       <item>
+         <title>code read note</title>
+         <link>http://superjomn.github.io/tags/code-read-note/</link>
+         <pubDate>Thu, 26 Dec 2019 00:00:00 +0800</pubDate>
+         
+         <guid>http://superjomn.github.io/tags/code-read-note/</guid>
          <description></description>
        </item>
        
@@ -26,6 +53,15 @@
          <pubDate>Thu, 26 Dec 2019 00:00:00 +0800</pubDate>
          
          <guid>http://superjomn.github.io/tags/emacs/</guid>
+         <description></description>
+       </item>
+       
+       <item>
+         <title>halide</title>
+         <link>http://superjomn.github.io/tags/halide/</link>
+         <pubDate>Thu, 26 Dec 2019 00:00:00 +0800</pubDate>
+         
+         <guid>http://superjomn.github.io/tags/halide/</guid>
          <description></description>
        </item>
        
@@ -44,15 +80,6 @@
          <pubDate>Thu, 26 Dec 2019 00:00:00 +0800</pubDate>
          
          <guid>http://superjomn.github.io/tags/hugo/</guid>
-         <description></description>
-       </item>
-       
-       <item>
-         <title>leetcode</title>
-         <link>http://superjomn.github.io/tags/leetcode/</link>
-         <pubDate>Thu, 26 Dec 2019 00:00:00 +0800</pubDate>
-         
-         <guid>http://superjomn.github.io/tags/leetcode/</guid>
          <description></description>
        </item>
        

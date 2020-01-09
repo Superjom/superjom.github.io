@@ -4,17 +4,47 @@
   
   <url>
     <loc>http://superjomn.github.io/posts/</loc>
-    <lastmod>2019-12-29T00:00:00+00:00</lastmod>
+    <lastmod>2020-01-09T00:00:00+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://superjomn.github.io/posts/design_pattern_builder/</loc>
-    <lastmod>2019-12-29T00:00:00+00:00</lastmod>
+    <loc>http://superjomn.github.io/tags/algorithm/</loc>
+    <lastmod>2020-01-09T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/tags/leetcode/</loc>
+    <lastmod>2020-01-09T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/leetcode_jump_game/</loc>
+    <lastmod>2020-01-09T00:00:00+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://superjomn.github.io/</loc>
+    <lastmod>2020-01-09T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/tags/</loc>
+    <lastmod>2020-01-09T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/tags/devide/</loc>
+    <lastmod>2019-12-30T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/leetcode_binary_devide_and_conqur/</loc>
+    <lastmod>2019-12-30T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/design_pattern_builder/</loc>
     <lastmod>2019-12-29T00:00:00+00:00</lastmod>
   </url>
   
@@ -29,12 +59,22 @@
   </url>
   
   <url>
-    <loc>http://superjomn.github.io/tags/algorithm/</loc>
+    <loc>http://superjomn.github.io/tags/code-read-note/</loc>
     <lastmod>2019-12-26T00:00:00+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://superjomn.github.io/tags/emacs/</loc>
+    <lastmod>2019-12-26T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/tags/halide/</loc>
+    <lastmod>2019-12-26T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://superjomn.github.io/posts/halide-code-read-note/</loc>
     <lastmod>2019-12-26T00:00:00+08:00</lastmod>
   </url>
   
@@ -49,17 +89,7 @@
   </url>
   
   <url>
-    <loc>http://superjomn.github.io/tags/leetcode/</loc>
-    <lastmod>2019-12-26T00:00:00+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://superjomn.github.io/posts/leetcode-list/</loc>
-    <lastmod>2019-12-26T00:00:00+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://superjomn.github.io/tags/</loc>
     <lastmod>2019-12-26T00:00:00+08:00</lastmod>
   </url>
   
