@@ -1,0 +1,323 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Superjomn&#39;s Blog</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="Superjomn" /><meta name="generator" content="Hugo 0.62.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+  <script src="https://kit.fontawesome.com/b76b73e8e8.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Superjomn's Blog</a>
+            </h1>
+
+      <ul id="social-media">
+        
+        
+          
+        <li><a href="https://github.com/Superjomn"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a></li>
+           
+      </ul>
+      
+      <p><em>Superjomn's blog</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+    <main>
+
+
+
+<main>
+    <article>
+    <header>
+        <h1>Leetcode Sliding Window</h1>
+    </header>
+        <h2 id="permutation-in-string">Permutation in String</h2>
+<p>Given two strings <strong>s1</strong> and <strong>s2</strong>, write a function to return true if <strong>s2</strong> contains the permutation of <strong>s1</strong>. In other words, one of the first string's permutations is the <strong>substring</strong> of the second string.</p>
+<p><strong>Example 1:</strong></p>
+<pre><code>Input: s1 = &quot;ab&quot; s2 = &quot;eidbaooo&quot;
+Output: True
+Explanation: s2 contains one permutation of s1 (&quot;ba&quot;).
+</code></pre><p><strong>Example 2:</strong></p>
+<pre><code>Input:s1= &quot;ab&quot; s2 = &quot;eidboaoo&quot;
+Output: False
+</code></pre><p><strong>Note:</strong></p>
+<ol>
+<li>The input strings only contain lower case letters.</li>
+<li>The length of both given strings is in range [1, 10,000].</li>
+</ol>
+<h3 id="solution-0">Solution 0</h3>
+<ul>
+<li>注意状态更新</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>(object):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">checkInclusion</span>(self, s1, s2):
+        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74"></span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :type s1: str</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :type s2: str</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :rtype: bool</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        </span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        k <span style="color:#f92672">=</span> len(s1)
+        N <span style="color:#f92672">=</span> len(s2)
+        <span style="color:#66d9ef">if</span> k <span style="color:#f92672">&gt;</span> N: <span style="color:#66d9ef">return</span> False
+       
+        memo <span style="color:#f92672">=</span> dict()
+        
+        <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> s1:
+            memo<span style="color:#f92672">.</span>setdefault(c, <span style="color:#ae81ff">0</span>)
+            memo[c] <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+        
+        chars <span style="color:#f92672">=</span> len(memo)
+        
+        <span style="color:#75715e"># init the first window</span>
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> xrange(k):
+            c <span style="color:#f92672">=</span> s2[i]
+            <span style="color:#66d9ef">if</span> c <span style="color:#f92672">in</span> memo:
+                memo[c] <span style="color:#f92672">-</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                <span style="color:#66d9ef">if</span> memo[c] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+                    chars <span style="color:#f92672">-</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                <span style="color:#66d9ef">elif</span> memo[c] <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>:
+                    chars <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                <span style="color:#66d9ef">if</span> chars <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">return</span> True
+     
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> xrange(<span style="color:#ae81ff">1</span>, N<span style="color:#f92672">-</span>k<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>):
+            out_c <span style="color:#f92672">=</span> s2[i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+            in_c <span style="color:#f92672">=</span> s2[i<span style="color:#f92672">+</span>k<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+            
+            <span style="color:#66d9ef">if</span> in_c <span style="color:#f92672">==</span> out_c: <span style="color:#66d9ef">continue</span>
+            <span style="color:#66d9ef">if</span> out_c <span style="color:#f92672">in</span> memo:
+                memo[out_c] <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                
+                <span style="color:#66d9ef">if</span> memo[out_c] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+                    chars <span style="color:#f92672">-</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                <span style="color:#66d9ef">elif</span> memo[out_c] <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+                    chars <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            <span style="color:#66d9ef">if</span> in_c <span style="color:#f92672">in</span> memo:
+                memo[in_c] <span style="color:#f92672">-</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                <span style="color:#66d9ef">if</span> memo[in_c] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+                    chars <span style="color:#f92672">-</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                <span style="color:#66d9ef">elif</span> memo[in_c] <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>:
+                    chars <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+   
+            <span style="color:#66d9ef">if</span> chars <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>: <span style="color:#66d9ef">return</span> True
+        <span style="color:#66d9ef">return</span> False
+</code></pre></div><h2 id="longest-substring-without-repeating-characters">Longest Substring Without Repeating Characters</h2>
+<p>Given a string, find the length of the <strong>longest substring</strong> without repeating characters.</p>
+<p><strong>Example 1:</strong></p>
+<pre><code>Input: &quot;abcabcbb&quot;
+Output: 3 
+Explanation: The answer is &quot;abc&quot;, with the length of 3. 
+</code></pre><p><strong>Example 2:</strong></p>
+<pre><code>Input: &quot;bbbbb&quot;
+Output: 1
+Explanation: The answer is &quot;b&quot;, with the length of 1.
+</code></pre><p><strong>Example 3:</strong></p>
+<pre><code>Input: &quot;pwwkew&quot;
+Output: 3
+Explanation: The answer is &quot;wke&quot;, with the length of 3. 
+             Note that the answer must be a substring, &quot;pwke&quot; is a subsequence and not a substring.
+</code></pre><h3 id="solution-0-1">Solution 0</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>(object):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lengthOfLongestSubstring</span>(self, s):
+        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74"></span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :type s: str</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :rtype: int</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        </span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        memo <span style="color:#f92672">=</span> set()
+        N <span style="color:#f92672">=</span> len(s)
+        maxlen <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        start <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        l <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> xrange(N):
+            <span style="color:#75715e"># ends on i</span>
+            c <span style="color:#f92672">=</span> s[i]
+            l <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+            <span style="color:#66d9ef">if</span> c <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> memo:
+                maxlen <span style="color:#f92672">=</span> max(maxlen, l)
+                memo<span style="color:#f92672">.</span>add(c)
+            <span style="color:#66d9ef">else</span>:
+                <span style="color:#66d9ef">while</span> start <span style="color:#f92672">&lt;</span> i:
+                    c0 <span style="color:#f92672">=</span> s[start]
+                    l <span style="color:#f92672">-</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                    memo<span style="color:#f92672">.</span>remove(c0)
+                    start <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                    <span style="color:#66d9ef">if</span> c <span style="color:#f92672">==</span> c0: <span style="color:#66d9ef">break</span>
+                memo<span style="color:#f92672">.</span>add(c)
+        <span style="color:#66d9ef">return</span> maxlen
+</code></pre></div><h2 id="minimum-window-substring">Minimum Window Substring</h2>
+<p>Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).</p>
+<p><strong>Example:</strong></p>
+<pre><code>Input: S = &quot;ADOBECODEBANC&quot;, T = &quot;ABC&quot;
+Output: &quot;BANC&quot;
+</code></pre><p><strong>Note:</strong></p>
+<ul>
+<li>If there is no such window in S that covers all characters in T, return the empty string <code>&quot;&quot;</code>.</li>
+<li>If there is such window, you are guaranteed that there will always be only one unique minimum window in S.</li>
+</ul>
+<h3 id="solution-0-2">Solution 0</h3>
+<ul>
+<li>双指针，start, end. end 每次往前走一步</li>
+<li>先维护一个合格的 window</li>
+<li>i 维护 window 的结尾</li>
+<li>动态推进 start</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>(object):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">minWindow</span>(self, s, t):
+        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74"></span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :type s: str</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :type t: str</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :rtype: str</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        </span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        n <span style="color:#f92672">=</span> len(s)
+        k <span style="color:#f92672">=</span> len(t)
+        <span style="color:#66d9ef">if</span> k <span style="color:#f92672">&gt;</span> n: <span style="color:#66d9ef">return</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>
+        
+        <span style="color:#75715e"># init memo of frequency of chars in t</span>
+        memo <span style="color:#f92672">=</span> dict()
+        <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> t:
+            memo[c] <span style="color:#f92672">=</span> memo<span style="color:#f92672">.</span>get(c, <span style="color:#ae81ff">0</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+        
+        res <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span>
+        
+        start <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        <span style="color:#75715e"># init the first window</span>
+        counts <span style="color:#f92672">=</span> len(memo)
+        windowsize <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n):
+            c <span style="color:#f92672">=</span> s[i]
+            <span style="color:#75715e"># eat current char</span>
+            <span style="color:#66d9ef">if</span> c <span style="color:#f92672">in</span> memo:
+                memo[c] <span style="color:#f92672">-</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                <span style="color:#66d9ef">if</span> memo[c] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+                    counts <span style="color:#f92672">-</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                <span style="color:#75715e"># shrink the size</span>
+                <span style="color:#66d9ef">if</span> counts <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+                    <span style="color:#66d9ef">while</span> start <span style="color:#f92672">&lt;</span> i:
+                        cs <span style="color:#f92672">=</span> s[start]
+                        <span style="color:#66d9ef">if</span> cs <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> memo:
+                            start <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                            <span style="color:#66d9ef">continue</span>
+                        <span style="color:#66d9ef">if</span> memo[cs] <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+                            start <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                            memo[cs] <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+                        <span style="color:#66d9ef">else</span>:
+                            <span style="color:#66d9ef">break</span>
+                    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">not</span> res) <span style="color:#f92672">or</span> i <span style="color:#f92672">-</span> start <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;</span> len(res):
+                        res <span style="color:#f92672">=</span> s[start:i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]
+        <span style="color:#66d9ef">return</span> res
+</code></pre></div><h2 id="sliding-window-maximum">Sliding Window Maximum</h2>
+<p>Given an array <em>nums</em>, there is a sliding window of size <em>k</em> which is moving from the very left of the array to the very right. You can only see the <em>k</em> numbers in the window. Each time the sliding window moves right by one position. Return the max sliding window.</p>
+<p><strong>Example:</strong></p>
+<pre><code>Input: nums = [1,3,-1,-3,5,3,6,7], and k = 3
+Output: [3,3,5,5,6,7] 
+Explanation: 
+
+Window position                Max
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+</code></pre><p><strong>Note:</strong>
+You may assume <em>k</em> is always valid, 1 ≤ k ≤ input array's size for non-empty array.</p>
+<p><strong>Follow up:</strong>
+Could you solve it in linear time?</p>
+<h3 id="solution-0-3">Solution 0</h3>
+<ul>
+<li>用 priority_queue</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> maxSlidingWindow(vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">&amp;</span> nums, <span style="color:#66d9ef">int</span> k) {
+        std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>priority_queue<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span> queue;
+        std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> res;
+        <span style="color:#66d9ef">if</span> (nums.empty()) <span style="color:#66d9ef">return</span> res;
+        
+        <span style="color:#66d9ef">if</span> (k <span style="color:#f92672">&gt;</span> nums.size() <span style="color:#f92672">|</span><span style="color:#f92672">|</span> k <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span> res;
+        
+        std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>unordered_map<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>,<span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> set;
+        <span style="color:#75715e">// init the first window
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> k; i<span style="color:#f92672">+</span><span style="color:#f92672">+</span>) {
+            set[nums[i]] <span style="color:#f92672">+</span><span style="color:#f92672">+</span>;
+            queue.push(nums[i]);
+        }
+        
+        res.push_back(queue.top());
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;</span> nums.size()<span style="color:#f92672">-</span>k<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>; i<span style="color:#f92672">+</span><span style="color:#f92672">+</span>) {
+            <span style="color:#66d9ef">int</span> out <span style="color:#f92672">=</span> nums[i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>];
+            <span style="color:#66d9ef">int</span> in <span style="color:#f92672">=</span> nums[i<span style="color:#f92672">+</span>k<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>];
+            set[in]<span style="color:#f92672">+</span><span style="color:#f92672">+</span>;
+            set[out]<span style="color:#f92672">-</span><span style="color:#f92672">-</span>;
+            queue.push(in);
+            
+            <span style="color:#66d9ef">int</span> top <span style="color:#f92672">=</span> queue.top();
+            <span style="color:#66d9ef">while</span>(<span style="color:#f92672">!</span>set.count(top) <span style="color:#f92672">|</span><span style="color:#f92672">|</span> set[top] <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>) {
+                queue.pop();
+                top <span style="color:#f92672">=</span> queue.top();
+            }
+            res.push_back(top);
+        }
+        <span style="color:#66d9ef">return</span> res;
+    }
+};
+</code></pre></div>
+    </article>
+    <aside>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#permutation-in-string">Permutation in String</a>
+      <ul>
+        <li><a href="#solution-0">Solution 0</a></li>
+      </ul>
+    </li>
+    <li><a href="#longest-substring-without-repeating-characters">Longest Substring Without Repeating Characters</a>
+      <ul>
+        <li><a href="#solution-0-1">Solution 0</a></li>
+      </ul>
+    </li>
+    <li><a href="#minimum-window-substring">Minimum Window Substring</a>
+      <ul>
+        <li><a href="#solution-0-2">Solution 0</a></li>
+      </ul>
+    </li>
+    <li><a href="#sliding-window-maximum">Sliding Window Maximum</a>
+      <ul>
+        <li><a href="#solution-0-3">Solution 0</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </aside>
+</main>
+
+
+</main>
+    <footer>
+        <h6> |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="http://superjomn.github.io/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>
