@@ -6,10 +6,66 @@
        <description>Recent content on Superjomn&#39;s Blog</description>
        <generator>Hugo -- gohugo.io</generator>
        <language>en-us</language>
-       <lastBuildDate>Fri, 10 Jan 2020 00:00:00 +0800</lastBuildDate>
+       <lastBuildDate>Sat, 11 Jan 2020 00:00:00 +0800</lastBuildDate>
        
            <atom:link href="http://superjomn.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
        
+       
+       <item>
+         <title>N Queues</title>
+         <link>http://superjomn.github.io/posts/leetcode_n_queens/</link>
+         <pubDate>Sat, 11 Jan 2020 00:00:00 +0800</pubDate>
+         
+         <guid>http://superjomn.github.io/posts/leetcode_n_queens/</guid>
+         <description>&lt;h2 id=&#34;51-n-queenshttpsleetcodecomproblemsn-queens&#34;&gt;&lt;a href=&#34;https://leetcode.com/problems/n-queens/&#34;&gt;51. N-Queens&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;solution-0&#34;&gt;Solution 0&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;backtrace&lt;/li&gt;
+&lt;li&gt;NOTE: 斜向的unique&lt;/li&gt;
+&lt;li&gt;DFS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Solution&lt;/span&gt;(object):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;solveNQueens&lt;/span&gt;(self, n):
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        :type n: int&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        :rtype: List[List[str]]&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+        part &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [[&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; j &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(n)] &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(n)]
+        rows &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; set()
+        cols &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; set()
+        res &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+        lstride &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; set()
+        rstride &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; set()
+        
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cal_stride&lt;/span&gt;(r, c):
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; r&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;c, c&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;r
+            
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;helper&lt;/span&gt;(part, level, cols, lstride, rstride, res):
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; level &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; n:
+                res&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append([])
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; row &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; part:
+                    res[&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(&lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(row))
+                
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(n):
+                ls, rs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cal_stride(level, i)
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; cols &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; ls &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; lstride &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; rs &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; rstride:
+                    cols&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(i)
+                    part[level][i] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Q&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;
+                    lstride&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(ls)
+                    rstride&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(rs)
+                    
+                    helper(part, level&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, cols, lstride, rstride, res)
+                    part[level][i] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;
+                    cols&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;remove(i)
+                    lstride&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;remove(ls)
+                    rstride&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;remove(rs)
+        
+        helper(part, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, cols, lstride, rstride, res)
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; res
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;52-n-queens-iihttpsleetcodecomproblemsn-queens-ii&#34;&gt;&lt;a href=&#34;https://leetcode.com/problems/n-queens-ii/&#34;&gt;52. N-Queens II&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;TODO&lt;/p&gt;
+</description>
+       </item>
        
        <item>
          <title>Leetcode Sliding Window</title>
@@ -1259,7 +1315,9 @@ std&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;c
          <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
          
          <guid>http://superjomn.github.io/posts/leetcode_dp/</guid>
-         <description></description>
+         <description>&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://leetcode.com/discuss/general-discussion/475924/my-experience-and-notes-for-learning-dp&#34;&gt;https://leetcode.com/discuss/general-discussion/475924/my-experience-and-notes-for-learning-dp&lt;/a&gt;&lt;/p&gt;
+</description>
        </item>
        
        <item>

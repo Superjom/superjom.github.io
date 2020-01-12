@@ -1,0 +1,126 @@
+<!doctype html>
+
+<html lang="en-us">
+
+<head>
+  <title>Superjomn&#39;s Blog</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="Superjomn" /><meta name="generator" content="Hugo 0.62.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+  <script src="https://kit.fontawesome.com/b76b73e8e8.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" /></head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Superjomn's Blog</a>
+            </h1>
+
+      <ul id="social-media">
+        
+        
+          
+        <li><a href="https://github.com/Superjomn"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a></li>
+           
+      </ul>
+      
+      <p><em>Superjomn's blog</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+    </ul>
+</nav>
+
+    <main>
+
+
+
+<main>
+    <article>
+    <header>
+        <h1>N Queues</h1>
+    </header>
+        <h2 id="51-n-queenshttpsleetcodecomproblemsn-queens"><a href="https://leetcode.com/problems/n-queens/">51. N-Queens</a></h2>
+<h3 id="solution-0">Solution 0</h3>
+<ul>
+<li>backtrace</li>
+<li>NOTE: 斜向的unique</li>
+<li>DFS</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Solution</span>(object):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">solveNQueens</span>(self, n):
+        <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;&#34;</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :type n: int</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        :rtype: List[List[str]]</span><span style="color:#e6db74">
+</span><span style="color:#e6db74"></span><span style="color:#e6db74">        </span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+        part <span style="color:#f92672">=</span> [[<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">.</span><span style="color:#e6db74">&#34;</span> <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(n)] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n)]
+        rows <span style="color:#f92672">=</span> set()
+        cols <span style="color:#f92672">=</span> set()
+        res <span style="color:#f92672">=</span> []
+        lstride <span style="color:#f92672">=</span> set()
+        rstride <span style="color:#f92672">=</span> set()
+        
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cal_stride</span>(r, c):
+            <span style="color:#66d9ef">return</span> r<span style="color:#f92672">+</span>c, c<span style="color:#f92672">-</span>r
+            
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">helper</span>(part, level, cols, lstride, rstride, res):
+            <span style="color:#66d9ef">if</span> level <span style="color:#f92672">==</span> n:
+                res<span style="color:#f92672">.</span>append([])
+                <span style="color:#66d9ef">for</span> row <span style="color:#f92672">in</span> part:
+                    res[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>append(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>join(row))
+                
+            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n):
+                ls, rs <span style="color:#f92672">=</span> cal_stride(level, i)
+                <span style="color:#66d9ef">if</span> i <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> cols <span style="color:#f92672">and</span> ls <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> lstride <span style="color:#f92672">and</span> rs <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> rstride:
+                    cols<span style="color:#f92672">.</span>add(i)
+                    part[level][i] <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">Q</span><span style="color:#e6db74">&#39;</span>
+                    lstride<span style="color:#f92672">.</span>add(ls)
+                    rstride<span style="color:#f92672">.</span>add(rs)
+                    
+                    helper(part, level<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, cols, lstride, rstride, res)
+                    part[level][i] <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">.</span><span style="color:#e6db74">&#39;</span>
+                    cols<span style="color:#f92672">.</span>remove(i)
+                    lstride<span style="color:#f92672">.</span>remove(ls)
+                    rstride<span style="color:#f92672">.</span>remove(rs)
+        
+        helper(part, <span style="color:#ae81ff">0</span>, cols, lstride, rstride, res)
+        <span style="color:#66d9ef">return</span> res
+</code></pre></div><h2 id="52-n-queens-iihttpsleetcodecomproblemsn-queens-ii"><a href="https://leetcode.com/problems/n-queens-ii/">52. N-Queens II</a></h2>
+<p>TODO</p>
+
+    </article>
+    <aside>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#51-n-queenshttpsleetcodecomproblemsn-queens">51. N-Queens</a>
+      <ul>
+        <li><a href="#solution-0">Solution 0</a></li>
+      </ul>
+    </li>
+    <li><a href="#52-n-queens-iihttpsleetcodecomproblemsn-queens-ii">52. N-Queens II</a></li>
+  </ul>
+</nav>
+    </aside>
+</main>
+
+
+</main>
+    <footer>
+        <h6> |
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="http://superjomn.github.io/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+
+</body>
+
+</html>
